@@ -4,24 +4,24 @@ const AtividadeSchema = new mongoose.Schema({
   nomeAluno: {
     type: String,
     required: [true, 'Por favor, forneça um nome ao aluno.'],
-    maxlength: [20, 'Nome do aluno não pode passar de 60 caracteres!'],
+    maxlength: [60, 'Nome do aluno não pode passar de 60 caracteres!'],
   },
   RA: {
     type: String,
     required: [true, "Por favor, forneça um RA ao aluno."],
-    maxlength: [20, "RA do aluno não pode passar de 60 caracteres!"],
+    maxlength: [60, "RA do aluno não pode passar de 60 caracteres!"],
   },
   nomeAtividade: {
     type: String,
     required: [true, "Por favor, forneça o nome da atividade."],
   },
   inicio: {
-    type: Date,
-    required: [true, "Por favor, forneça a data de inicio do curso."],
+    type: String,
+    required: [true, "Por favor, forneça a data de inicio da atividade."],
   },
   termino: {
-    type: Date,
-    required: [true, "Por favor, forneça a data de termino do curso."],
+    type: String,
+    required: [true, "Por favor, forneça a data de termino da atividade."],
   },
   cidade: {
     type: String,
@@ -35,19 +35,22 @@ const AtividadeSchema = new mongoose.Schema({
     type: String,
     required: [true, "Por favor, forneça o nome do palestrante da atividade realizada."],
   },
-  indicacaoProfessor: {
-    type: String,
-  },
   categoria: {
     type: String,
     required: [true, "Por favor, forneça a categoria da atividade realizada."],
   },
+  indicacaoProfessor: {
+    type: String,
+  },
   dataDeEnvio: {
-    type: Date,
+    type: String,
     required: [true],
   },
-  dataDeAprovacao: {
-    type: Date,
+  professor: {
+    type: String,
+  },
+  dataDaRespostaDoProfessor: {
+    type: String,
   },
   status: {
     type: String,
