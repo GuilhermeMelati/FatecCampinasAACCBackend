@@ -29,10 +29,6 @@ const AlunoSchema = new mongoose.Schema({
     type: String,
     required: [true, "Por favor, forneça um curso ao aluno."],
   },
-  semestre: {
-    type: Number,
-    required: [true, "Por favor, forneça um semestre ao aluno."],
-  },
   periodo: {
     type: String,
     required: [true, "Por favor, forneça um período ao aluno."],

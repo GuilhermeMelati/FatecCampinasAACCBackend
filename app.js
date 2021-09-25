@@ -26,44 +26,44 @@ app.use(express.static('public'))
 
 // ROTA PARA OBTER TODAS AS ATIVIDADES
 app.get('/api/obter/atividades/todas', verificarJWT, async(req, res, next) => {
-  AtividadeSchema.find((err, document) => {
+  AtividadeSchema.find((err, atividades) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(atividades)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // ROTA PARA OBTER ATIVIDADES PENDENTES
 app.get('/api/obter/atividades/pendentes', verificarJWT, async(req, res, next) => {
-  AtividadeSchema.find({ status: 'pendente' }, (err, document) => {
+  AtividadeSchema.find({ status: 'pendente' }, (err, atividades) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(atividades)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // ROTA PARA OBTER ATIVIDADES CONFIRMADAS
 app.get('/api/obter/atividades/confirmadas', verificarJWT, async(req, res, next) => {
-  AtividadeSchema.find({ status: 'confirmada' }, (err, document) => {
+  AtividadeSchema.find({ status: 'confirmada' }, (err, atividades) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(atividades)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // ROTA PARA OBTER ATIVIDADES NEGADAS
 app.get('/api/obter/atividades/negadas', verificarJWT, async(req, res, next) => {
-  AtividadeSchema.find({ status: 'negada' }, (err, document) => {
+  AtividadeSchema.find({ status: 'negada' }, (err, atividades) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(atividades)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
@@ -73,11 +73,11 @@ app.get('/api/obter/atividades/negadas', verificarJWT, async(req, res, next) => 
 // OBTER TODAS AS ATIVIDADES DO ALUNO COM BASE NO RA
 app.get('/api/obter/atividades/todas/:RA', verificarJWT, async(req, res, next) => {
   const RA = req.params.RA
-  AtividadeSchema.find({ RA: RA }, (err, document) => {
+  AtividadeSchema.find({ RA: RA }, (err, atividades) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(atividades)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
@@ -90,11 +90,11 @@ app.get('/api/obter/atividades/pendentes/:RA', verificarJWT, async(req, res, nex
       RA: RA,
       status: 'pendente',
     },
-    (err, document) => {
+    (err, atividades) => {
       if (!err) {
-        res.send(document)
+        res.status(200).send(atividades)
       } else {
-        res.status('400').send(err)
+        res.status(400).send(err)
       }
     }
   )
@@ -108,11 +108,11 @@ app.get('/api/obter/atividades/confirmadas/:RA', verificarJWT, async(req, res, n
       RA: RA,
       status: 'confirmada',
     },
-    (err, document) => {
+    (err, atividades) => {
       if (!err) {
-        res.send(document)
+        res.status(200).send(atividades)
       } else {
-        res.status('400').send(err)
+        res.status(400).send(err)
       }
     }
   )
@@ -126,11 +126,11 @@ app.get('/api/obter/atividades/negadas/:RA', verificarJWT, async(req, res, next)
       RA: RA,
       status: 'negada',
     },
-    (err, document) => {
+    (err, atividades) => {
       if (!err) {
-        res.send(document)
+        res.status(200).send(atividades)
       } else {
-        res.status('400').send(err)
+        res.status(400).send(err)
       }
     }
   )
@@ -140,9 +140,9 @@ app.get('/api/obter/atividades/negadas/:RA', verificarJWT, async(req, res, next)
 app.get('/api/obter/atividade/:ID', verificarJWT, async(req, res, next) => {
   AtividadeSchema.findById(
     req.params.ID,
-    (err, document) => {
+    (err, atividade) => {
       if (!err) {
-        res.status(200).send(document)
+        res.status(200).send(atividade)
       } else {
         res.status(400).send(err)
       }
@@ -156,7 +156,7 @@ app.post('/api/inserir/atividade', verificarJWT, async(req, res, next) => {
 
   newAtividade.save((err) => {
     if (!err) {
-      res.status(200).send('OK')
+      res.status(200).send('Atividade inserida com sucesso!')
     } else {
       res.status(400).send(err)
     }
@@ -170,7 +170,7 @@ app.patch('/api/atualizar/atividade', verificarJWT, async(req, res, next) => {
     {$set: req.body},
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Atividade atualizada com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -184,7 +184,7 @@ app.delete('/api/deletar/atividade/:ID', verificarJWT, async(req, res, next) => 
     req.params.ID,
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Atividade deletada com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -194,34 +194,34 @@ app.delete('/api/deletar/atividade/:ID', verificarJWT, async(req, res, next) => 
 
 // OBTER TODOS OS ALUNOS
 app.get('/api/obter/todos/alunos', verificarJWT, async(req, res, next) => {
-  AlunoSchema.find((err, document) => {
+  AlunoSchema.find((err, alunos) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(alunos)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // OBTER ALUNO COM BASE NO RA
-app.get('/api/obter/aluno/:RA', async(req, res, next) => {
-  AlunoSchema.findOne((err, document) => {
+app.get('/api/obter/aluno/:RA', verificarJWT, async(req, res, next) => {
+  AlunoSchema.findOne((err, aluno) => {
     { RA: req.params.RA }
     if (!err) {
-      res.send(document)
+      res.status(200).send(aluno)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // INSERIR UM NOVO ALUNO
-app.post('/api/inserir/aluno', async(req, res, next) => {
+app.post('/api/inserir/aluno', verificarJWT, async(req, res, next) => {
   const newAluno = new AlunoSchema(req.body)
 
   newAluno.save((err) => {
     if (!err) {
-      res.status(200).send('OK')
+      res.status(200).send('Aluno(a) inserido com sucesso!')
     } else {
       res.status(400).send(err)
     }
@@ -240,7 +240,7 @@ app.patch('/api/atualizar/aluno', verificarJWT, async(req, res, next) => {
     {$set: req.body},
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Aluno(a) atualizado com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -254,7 +254,7 @@ app.delete('/api/deletar/aluno/:RA', verificarJWT, async(req, res, next) => {
     { RA: req.params.RA },
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Aluno(a) apagado com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -264,22 +264,34 @@ app.delete('/api/deletar/aluno/:RA', verificarJWT, async(req, res, next) => {
 
 // OBTER TODOS OS PROFESSORES
 app.get('/api/obter/todos/professores', verificarJWT, async(req, res, next) => {
-  ProfessorSchema.find((err, document) => {
+  ProfessorSchema.find((err, professores) => {
     if (!err) {
-      res.send(document)
+      res.status(200).send(professores)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
+    }
+  })
+})
+
+// OBTER PROFESSOR COM BASE NO EMAIL
+app.get('/api/obter/professor/:email', verificarJWT, async(req, res, next) => {
+  ProfessorSchema.findOne((err, professor) => {
+    { email: req.params.email }
+    if (!err) {
+      res.status(200).send(professor)
+    } else {
+      res.status(400).send(err)
     }
   })
 })
 
 // INSERIR UM NOVO PROFESSOR
-app.post('/api/inserir/professor', async(req, res, next) => {
+app.post('/api/inserir/professor', verificarJWT, async(req, res, next) => {
   const newProfessor = new ProfessorSchema(req.body)
 
   newProfessor.save((err) => {
     if (!err) {
-      res.status(200).send('OK')
+      res.status(200).send('Professor(a) inserido com sucesso!')
     } else {
       res.status(400).send(err)
     }
@@ -287,7 +299,7 @@ app.post('/api/inserir/professor', async(req, res, next) => {
 })
 
 // ATUALIZAR DADOS DE UM PROFESSOR
-app.patch('/api/atualizar/professor', async(req, res, next) => {
+app.patch('/api/atualizar/professor', verificarJWT, async(req, res, next) => {
   if (req.body.hasOwnProperty('senha')) {
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
     req.body.senha = await bcrypt.hash(req.body.senha, salt)
@@ -298,7 +310,7 @@ app.patch('/api/atualizar/professor', async(req, res, next) => {
     { $set: req.body },
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Professor(a) atualizado com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -312,7 +324,7 @@ app.delete('/api/deletar/aluno/:email', verificarJWT, async(req, res, next) => {
     { email: req.params.email },
     (err) => {
       if (!err) {
-        res.status(200).send('OK')
+        res.status(200).send('Professor(a) apagado com sucesso!')
       } else {
         res.status(400).send(err)
       }
@@ -349,9 +361,9 @@ app.post('/api/login', async(req, res, next) => {
         })
       } else {
         AlunoSchema.findOne({ RA: req.body.login }, (err, aluno) => {
-          var idAluno = aluno._id
           if (!err) {
             if (aluno !== null) {
+              var idAluno = aluno._id
               aluno.validarSenha(req.body.senha, (err, ok) => {
                 if(ok === true) {
                   var token = jwt.sign({ idAluno }, privateKey, { 
@@ -407,19 +419,19 @@ app.post('/api/recuperar/senha', async(req, res) => {
 })
 
 // RECUPERAR A SENHA DE UM USER
-app.get('/api/recuper/senha/:token/:ra', verifyJWT, async(req, res, next) => {
+app.get('/api/recuper/senha/:token/:ra', async(req, res, next) => {
   AlunoSchema.findOne((err, document) => {
     { RA: req.params.RA }
     if (!err) {
-      res.send(document)
+      res.status(200).send(document)
     } else {
-      res.status('400').send(err)
+      res.status(400).send(err)
     }
   })
 })
 
 // VER SE O TOKEN DE RECUPERAÇÃO É CORRETO
-function verifyJWT(req, res, next){
+async function verifyJWT(req, res, next){
   const token = req.params.token;
   if (!token) return res.status(401).json({ auth: false, message: 'Token não informado.' });
   
