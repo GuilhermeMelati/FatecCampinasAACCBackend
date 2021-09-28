@@ -1,5 +1,6 @@
 // REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DO SERVIDOR
 const express = require("express");
+const cors = require('cors');
 const mongoose = require("mongoose");
 const admRouter = require("./routes/admRouter");
 const alunoRouter = require("./routes/alunoRouter");
@@ -12,6 +13,9 @@ mongoose.connect(process.env.MONGO_URI);
 
 // DEFININDO OS SETS DO EXPRESS
 const app = express();
+app.use(cors({
+  origin: '*'
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
