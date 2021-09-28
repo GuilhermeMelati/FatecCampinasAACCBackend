@@ -73,7 +73,7 @@ professorRouter.get(
 
 // OBTER TODOS OS ALUNOS
 professorRouter.get(
-  "/api/aluno",
+  "/api/aluno/todos",
   verificarJWTProfessor,
   async (req, res, next) => {
     alunoSchema.find((err, alunos) => {

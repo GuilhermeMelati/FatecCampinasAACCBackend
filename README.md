@@ -6,9 +6,6 @@
 
 Sistema para cadastro de atividades extra curriculares da Fatec Campinas!
 
-
-
-
 ## Autores
 
 - [Guilherme Melati](https://github.com/GuilhermeMelati)
@@ -34,8 +31,6 @@ Sistema para cadastro de atividades extra curriculares da Fatec Campinas!
 - [x] Autenticação RSA - Mais segurança na Autenticação das rotas.
 - [x] Token com JWT - Mais segurança com tokens finitos.
 - [x] Nodemailer para envio de emails - Mais performático.
-- [ ] Armazenamento de arquivos via Google Drive - Em andamento...
-
   
 ## Instalação
 
@@ -86,7 +81,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 #### Rotas Atividades
 
 ```http
-  GET /api/obter/atividades/todas
+  GET /api/atividades/todas
 ```
 
 | Parameter | Type     | Description                |
@@ -94,7 +89,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/pendentes
+  GET /api/atividades/pendentes
 ```
 
 | Parameter | Type     | Description                |
@@ -102,7 +97,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/confirmadas
+  GET /api/atividades/confirmadas
 ```
 
 | Parameter | Type     | Description                |
@@ -110,7 +105,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/negadas
+  GET /api/atividades/negadas
 ```
 
 | Parameter | Type     | Description                |
@@ -118,16 +113,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/todas/:RA
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `RA` | `number` | **Obrigatório**. RA do aluno que se deseja obter atividades |
-| `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
-
-```http
-  GET /api/obter/atividades/pendentes/:RA
+  GET /api/atividades/todas/:RA
 ```
 
 | Parameter | Type     | Description                |
@@ -136,7 +122,16 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/confirmadas/:RA
+  GET /api/atividades/pendentes/:RA
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `RA` | `number` | **Obrigatório**. RA do aluno que se deseja obter atividades |
+| `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
+
+```http
+  GET /api/atividades/confirmadas/:RA
 ```
 
 | Parameter | Type     | Description                |
@@ -145,7 +140,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividades/negadas/:RA
+  GET /api/atividades/negadas/:RA
 ```
 
 | Parameter | Type     | Description                |
@@ -154,7 +149,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/atividade/:ID
+  GET /api/atividade/:ID
 ```
 
 | Parameter | Type     | Description                |
@@ -163,7 +158,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  POST /api/inserir/atividade
+  POST /api/atividade
 ```
 
 | Parameter | Type     | Description                |
@@ -172,7 +167,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  PATCH /api/atualizar/atividade
+  PATCH /api/atividade
 ```
 
 | Parameter | Type     | Description                |
@@ -181,7 +176,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  DELETE /api/deletar/atividade/:ID
+  DELETE /api/atividade/:ID
 ```
 
 | Parameter | Type     | Description                |
@@ -190,7 +185,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  DELETE /api/deletar/atividade/:ID
+  DELETE /api/atividade/:ID
 ```
 
 | Parameter | Type     | Description                |
@@ -201,7 +196,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 #### Rotas Alunos
 
 ```http
-  GET /api/obter/todos/alunos
+  GET /api/alunos/todos
 ```
 
 | Parameter | Type     | Description                |
@@ -209,7 +204,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/aluno/:RA
+  GET /api/aluno/:RA
 ```
 
 | Parameter | Type     | Description                |
@@ -218,7 +213,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  POST /api/inserir/aluno
+  POST /api/aluno
 ```
 
 | Parameter | Type     | Description                |
@@ -227,7 +222,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  PATCH /api/atualizar/aluno
+  PATCH /api/aluno
 ```
 
 | Parameter | Type     | Description                |
@@ -236,7 +231,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  DELETE /api/deletar/aluno/:RA
+  DELETE /api/aluno/:RA
 ```
 
 | Parameter | Type     | Description                |
@@ -247,7 +242,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 #### Rotas Professores
 
 ```http
-  GET /api/obter/todos/professores
+  GET /api/professor/todos
 ```
 
 | Parameter | Type     | Description                |
@@ -255,7 +250,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  GET /api/obter/professor/:email
+  GET /api/professor/:email
 ```
 
 | Parameter | Type     | Description                |
@@ -264,7 +259,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  POST /api/inserir/professor
+  POST /api/professor
 ```
 
 | Parameter | Type     | Description                |
@@ -273,7 +268,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  PATCH /api/atualizar/professor
+  PATCH /api/professor
 ```
 
 | Parameter | Type     | Description                |
@@ -282,7 +277,7 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
-  DELETE /api/deletar/aluno/:email
+  DELETE /api/professor/:email
 ```
 
 | Parameter | Type     | Description                |
