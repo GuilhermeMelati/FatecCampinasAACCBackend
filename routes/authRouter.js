@@ -18,10 +18,11 @@ admRouter.post("/api/login", async (req, res, next) => {
         const idProfessor = professor._id;
         professor.validarSenha(req.body.senha, (err, ok) => {
           if (ok === true) {
+            let acesso;
             if (professor.superUser === true) {
-              const acesso = "adm";
+              acesso = "adm";
             } else {
-              const acesso = "professor";
+              acesso = "professor";
             }
 
             const token = jwt.sign({ idProfessor, acesso }, privateKey, {
