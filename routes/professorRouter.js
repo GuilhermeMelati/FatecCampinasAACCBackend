@@ -57,7 +57,7 @@ professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('f
       if (!err) {
         res.status(200).send("Aluno(a) inserido com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }))
@@ -72,7 +72,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -87,7 +87,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -102,7 +102,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -117,7 +117,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -132,7 +132,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(alunos);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -150,7 +150,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(aluno);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -167,7 +167,7 @@ professorRouter.post(
       if (!err) {
         res.status(200).send("Aluno(a) inserido com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -187,7 +187,7 @@ professorRouter.patch(
       if (!err) {
         res.status(200).send("Aluno(a) atualizado com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -202,7 +202,7 @@ professorRouter.delete(
       if (!err) {
         res.status(200).send("Aluno(a) apagado com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -212,7 +212,7 @@ professorRouter.delete(
 async function verificarJWTProfessor(req, res, next) {
   const token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(400).send({ message: "Token não informado." });
+    return res.status(401).send({ message: "Token não informado." });
   }
 
   jwt.verify(token, publicKey, { algorithm: ["RS256"] }, (err, decoded) => {

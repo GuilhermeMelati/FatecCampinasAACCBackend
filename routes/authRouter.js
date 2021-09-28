@@ -1,6 +1,6 @@
 // REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DA ROTA
 const { Router } = require("express");
-const recuperarSenha = require("../utils/messages/recoveryPass");
+const recuperarSenha = require("../utils/notificacoes/recuperarSenha");
 const professorSchema = require("../models/professor");
 const alunoSchema = require("../models/alunos");
 const admRouter = Router();
@@ -33,7 +33,7 @@ admRouter.post("/api/login", async (req, res, next) => {
               token: token,
             });
           }
-          return res.status(400).send("Login inválido!");
+          return res.status(401).send("Login inválido!");
         });
       } else {
         alunoSchema.findOne({ RA: req.body.login }, (err, aluno) => {
@@ -52,16 +52,16 @@ admRouter.post("/api/login", async (req, res, next) => {
                     token: token,
                   });
                 }
-                return res.status(400).send("Login inválido!");
+                return res.status(401).send("Login inválido!");
               });
             }
           } else {
-            res.status(400).send(err);
+            res.status(401).send(err);
           }
         });
       }
     } else {
-      res.status(400).send(err);
+      res.status(401).send(err);
     }
   });
 });
@@ -83,15 +83,15 @@ admRouter.post("/api/recuperar/senha", async (req, res) => {
           expiresIn: 900,
           algorithm: "RS256",
         });
-        const link = `http://localhost:4000/api/recuper/senha/${token}/${aluno.RA}`;
-        recuperarSenha.sendEmail(aluno.email, link, aluno.nome);
+        const link = `http://localhost:4010/api/recuper/senha/${token}/${aluno.RA}`;
+        recuperarSenha.enviarEmail(aluno.email, link, aluno.nome);
         return res
           .status(200)
           .send("Foi enviado no seu email o link para recuperar sua senha!");
       }
-      return res.status(400).send("Nenhum aluno encontrado com esse RA!");
+      return res.status(401).send("Nenhum aluno encontrado com esse RA!");
     } else {
-      res.status(400).send(err);
+      res.status(401).send(err);
     }
   });
 });
@@ -108,11 +108,11 @@ admRouter.get("/api/recuper/senha/:token/:ra", async (req, res, next) => {
       if (!err) {
         res.status(200).send(document);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   } else {
-    res.status(400).send("Você não tem permissão.");
+    res.status(401).send("Você não tem permissão.");
   }
 });
 

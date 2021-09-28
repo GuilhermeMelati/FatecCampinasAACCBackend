@@ -1,6 +1,7 @@
 // REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DA ROTA
 const { Router } = require("express");
 const atividadeSchema = require("../models/atividades");
+const statusModificado = require("../utils/notificacoes/statusModificado");
 const alunoRouter = Router();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
@@ -19,7 +20,7 @@ alunoRouter.get(
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -37,7 +38,7 @@ alunoRouter.get("/api/atividades/pendentes/:RA", async (req, res, next) => {
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     }
   );
@@ -55,7 +56,7 @@ alunoRouter.get("/api/atividades/confirmadas/:RA", async (req, res, next) => {
       if (!err) {
         res.status(200).send(atividades);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     }
   );
@@ -76,7 +77,7 @@ alunoRouter.get(
         if (!err) {
           res.status(200).send(atividades);
         } else {
-          res.status(400).send(err);
+          res.status(401).send(err);
         }
       }
     );
@@ -92,7 +93,7 @@ alunoRouter.get(
       if (!err) {
         res.status(200).send(atividade);
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -109,7 +110,7 @@ alunoRouter.post(
       if (!err) {
         res.status(200).send("Atividade inserida com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -120,19 +121,28 @@ alunoRouter.patch(
   "/api/atividade",
   verificarJWTAluno,
   async (req, res, next) => {
-    atividadeSchema.findByIdAndUpdate(
-      req.body._id,
-      { $set: req.body },
-      (err) => {
-        if (!err) {
-          res.status(200).send("Atividade atualizada com sucesso!");
-        } else {
-          res.status(400).send(err);
-        }
+    const RA = req.body.RA;
+    alunoSchema.findOne({ RA: RA }, (err, aluno) => {
+    if (!err) {
+      if (req.body.status) {
+        statusModificado.enviarEmail(aluno.email, 'localhost:4000', aluno.nome)
       }
-    );
-  }
-);
+      atividadeSchema.findByIdAndUpdate(
+        req.body._id,
+        { $set: req.body },
+        (err) => {
+          if (!err) {
+            res.status(200).send("Atividade atualizada com sucesso!");
+          } else {
+            res.status(401).send(err);
+          }
+        }
+      );
+    } else {
+      res.status(401).send(err);
+    }
+  });
+})
 
 // DELETAR UMA ATIVIDADE COM BASE NO ID
 alunoRouter.delete(
@@ -143,7 +153,7 @@ alunoRouter.delete(
       if (!err) {
         res.status(200).send("Atividade deletada com sucesso!");
       } else {
-        res.status(400).send(err);
+        res.status(401).send(err);
       }
     });
   }
@@ -153,7 +163,7 @@ alunoRouter.delete(
 async function verificarJWTAluno(req, res, next) {
   var token = req.headers["x-access-token"];
   if (!token) {
-    return res.status(400).send({ message: "Token não informado." });
+    return res.status(401).send({ message: "Token não informado." });
   }
 
   jwt.verify(token, publicKey, { algorithm: ["RS256"] }, (err, decoded) => {
