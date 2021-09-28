@@ -1,10 +1,12 @@
-const mongoose = require('mongoose')
+// REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DO SCHEMA
+const mongoose = require("mongoose");
 
-const AtividadeSchema = new mongoose.Schema({
+// DEFININDO O SCHEMA
+const atividadeSchema = new mongoose.Schema({
   nomeAluno: {
     type: String,
-    required: [true, 'Por favor, forneça um nome ao aluno.'],
-    maxlength: [60, 'Nome do aluno não pode passar de 60 caracteres!'],
+    required: [true, "Por favor, forneça um nome ao aluno."],
+    maxlength: [60, "Nome do aluno não pode passar de 60 caracteres!"],
   },
   RA: {
     type: String,
@@ -33,7 +35,10 @@ const AtividadeSchema = new mongoose.Schema({
   },
   nomePalestrante: {
     type: String,
-    required: [true, "Por favor, forneça o nome do palestrante da atividade realizada."],
+    required: [
+      true,
+      "Por favor, forneça o nome do palestrante da atividade realizada.",
+    ],
   },
   categoria: {
     type: String,
@@ -60,8 +65,8 @@ const AtividadeSchema = new mongoose.Schema({
     type: Number,
   },
   comentariosProfessor: {
-    type: String
+    type: String,
   },
-})
+});
 
-module.exports = mongoose.model('Atividade', AtividadeSchema)
+module.exports = mongoose.model("Atividade", atividadeSchema);
