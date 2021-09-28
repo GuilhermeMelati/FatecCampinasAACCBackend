@@ -222,6 +222,16 @@ Você deve primeiramente criar um cluster no Mongo DB Atlas, após isso insira a
 | `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
 
 ```http
+  POST /api/uploadexcel
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `body` | `object` | **Obrigatório**. req.file.originalname. |
+| `token` | `string` | **Obrigatório**. req.headers['x-access-token'], token deve estar no header da requisição. |
+
+
+```http
   PATCH /api/aluno
 ```
 

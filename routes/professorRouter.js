@@ -6,10 +6,62 @@ const alunoSchema = require("../models/alunos");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const bcrypt = require("bcryptjs");
+const multer = require('multer')
+const excelToJson = require('convert-excel-to-json')
 const publicKey = fs.readFileSync("./utils/keys/public.key", "utf8");
 require("dotenv/config");
 
+function tratarXLSX(file){
+  const alunos = excelToJson({
+      source: fs.readFileSync(`./uploads/alunos/${file}`),
+      header:{
+        rows: 1
+      },
+      sheets: ['Alunos'],
+      columnToKey: {
+        A: 'nome',
+        B: 'RA',
+        C: 'senha',
+        D: 'email',
+        E: 'horasAprovadas',
+        F: 'horasPendentes',
+        G: 'periodo',
+        H: 'curso'
+      }
+  })
+  return alunos.alunos
+}
+
 // ROTAS PARA USO DO PROFESSOR
+
+const destino = multer.diskStorage({
+  destination: (req, file, callback) => {
+      callback(null, './uploads/alunos')
+  },
+  filename: (req, file, callback) => {
+      callback(null, file.originalname)
+  }
+})
+
+const upload = multer({
+  storage: destino
+})
+
+professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('file'), (req, res) => {
+  const alunos = tratarXLSX(req.file.originalname)
+
+  res.send(alunos.map((demanda) => {
+    const newAluno = new alunoSchema(demanda);
+
+    newAluno.save((err) => {
+      if (!err) {
+        res.status(200).send("Aluno(a) inserido com sucesso!");
+      } else {
+        res.status(400).send(err);
+      }
+    });
+  }))
+})
 
 // ROTA PARA OBTER TODAS AS ATIVIDADES
 professorRouter.get(
@@ -158,7 +210,7 @@ professorRouter.delete(
 
 // VER SE O USER ESTÁ LOGADO
 async function verificarJWTProfessor(req, res, next) {
-  var token = req.headers["x-access-token"];
+  const token = req.headers["x-access-token"];
   if (!token) {
     return res.status(400).send({ message: "Token não informado." });
   }
