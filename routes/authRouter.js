@@ -19,13 +19,19 @@ admRouter.post("/api/login", async (req, res, next) => {
         professor.validarSenha(req.body.senha, (err, ok) => {
           if (ok === true) {
             let acesso;
+
             if (professor.superUser === true) {
               acesso = "adm";
             } else {
               acesso = "professor";
             }
 
-            const token = jwt.sign({ idProfessor, acesso }, privateKey, {
+            const token = jwt.sign({
+              idProfessor,
+              acesso,
+              email: professor.email,
+              nome: professor.nome
+            }, privateKey, {
               expiresIn: 900,
               algorithm: "RS256",
             });
@@ -44,7 +50,12 @@ admRouter.post("/api/login", async (req, res, next) => {
               const acesso = "user";
               aluno.validarSenha(req.body.senha, (err, ok) => {
                 if (ok === true) {
-                  const token = jwt.sign({ idAluno, acesso }, privateKey, {
+                  const token = jwt.sign({
+                    idAluno,
+                    acesso,
+                    nome: aluno.nome,
+                    email: aluno.email,
+                  }, privateKey, {
                     expiresIn: 900,
                     algorithm: "RS256",
                   });
