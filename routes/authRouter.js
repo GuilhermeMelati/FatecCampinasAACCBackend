@@ -3,7 +3,7 @@ const { Router } = require("express");
 const recuperarSenha = require("../utils/notificacoes/recuperarSenha");
 const professorSchema = require("../models/professor");
 const alunoSchema = require("../models/alunos");
-const admRouter = Router();
+const authRouter = Router();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const privateKey = fs.readFileSync("./utils/keys/private.key", "utf8");
@@ -11,7 +11,7 @@ const publicKey = fs.readFileSync("./utils/keys/public.key", "utf8");
 require("dotenv/config");
 
 // AUTENTICAR UM USER
-admRouter.post("/api/login", async (req, res, next) => {
+authRouter.post("/api/login", async (req, res, next) => {
   professorSchema.findOne({ email: req.body.login }, (err, professor) => {
     if (!err) {
       if (professor !== null) {
@@ -55,6 +55,7 @@ admRouter.post("/api/login", async (req, res, next) => {
                     acesso,
                     nome: aluno.nome,
                     email: aluno.email,
+                    ra: aluno.RA,
                   }, privateKey, {
                     expiresIn: 900,
                     algorithm: "RS256",
@@ -79,12 +80,12 @@ admRouter.post("/api/login", async (req, res, next) => {
 });
 
 // DESLOGAR UM USER
-admRouter.post("/api/logout", async (req, res) => {
+authRouter.post("/api/logout", async (req, res) => {
   res.json({ auth: false, token: null, acess: "false" });
 });
 
 // RECUPERAR A SENHA DE UM USER
-admRouter.post("/api/recuperar/senha", async (req, res) => {
+authRouter.post("/api/recuperar-senha", async (req, res) => {
   const RA = req.body.RA;
   alunoSchema.findOne({ RA: RA }, (err, aluno) => {
     if (!err) {
@@ -109,14 +110,14 @@ admRouter.post("/api/recuperar/senha", async (req, res) => {
 });
 
 // RECUPERAR A SENHA DE UM USER
-admRouter.get("/api/recuper/senha/:token/:ra", async (req, res, next) => {
+authRouter.get("/api/recuperar-senha/:token/:ra", async (req, res, next) => {
   const auth = verificarJWTRecuperar(req.params.token, req.params.ra);
   console.log(auth)
   if (auth === true) {
-    alunoSchema.findOne((err, document) => {
-      {
-        RA: req.params.RA;
-      }
+    alunoSchema.findOne({
+      RA: req.params.ra,
+    },
+    (err, document) => {
       if (!err) {
         res.status(200).send(document);
       } else {
@@ -153,4 +154,4 @@ function verificarJWTRecuperar(token, RA) {
   );
 }
 
-module.exports = admRouter;
+module.exports = authRouter;

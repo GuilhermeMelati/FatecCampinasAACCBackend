@@ -20,18 +20,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-
 // ROTAS
 app.use(admRouter)
 app.use(alunoRouter)
 app.use(authRouter)
 app.use(professorRouter)
 
-
 // DEFININDO A PORTA DO SERVIDOR (PADRÃO 4000)
 const port = process.env.PORT || 4000;
 
 // ESCUTANDO A PORTA
-const server = app.listen(port, () => {
+app.listen(port, () => {
   console.log("Rodando na porta " + port);
 });
