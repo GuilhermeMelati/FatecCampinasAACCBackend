@@ -10,78 +10,80 @@ const privateKey = fs.readFileSync("./utils/keys/private.key", "utf8");
 const publicKey = fs.readFileSync("./utils/keys/public.key", "utf8");
 require("dotenv/config");
 
+const generateProfessorToken = (professor) => {
+  const acesso =  professor.superUser ? "adm" : "professor";
+
+  return jwt.sign({
+    id: professor._id,
+    acesso,
+    email: professor.email,
+    nome: professor.nome
+  }, privateKey, {
+    expiresIn: 900,
+    algorithm: "RS256",
+  });
+}
+
+const generateStudentToken = (aluno) => (
+  jwt.sign({
+    id: aluno._id,
+    acesso: 'user',
+    nome: aluno.nome,
+    email: aluno.email,
+    ra: aluno.RA,
+  }, privateKey, {
+    expiresIn: 900,
+    algorithm: "RS256",
+  })
+)
+
 // AUTENTICAR UM USER
-authRouter.post("/api/login", async (req, res, next) => {
-  professorSchema.findOne({ email: req.body.login }, (err, professor) => {
-    if (!err) {
-      if (professor !== null) {
-        const idProfessor = professor._id;
-        professor.validarSenha(req.body.senha, (err, ok) => {
-          if (ok === true) {
-            let acesso;
+authRouter.post("/api/login", async (req, res) => {
+  const { login, senha } = req.body;
 
-            if (professor.superUser === true) {
-              acesso = "adm";
-            } else {
-              acesso = "professor";
-            }
-
-            const token = jwt.sign({
-              idProfessor,
-              acesso,
-              email: professor.email,
-              nome: professor.nome
-            }, privateKey, {
-              expiresIn: 900,
-              algorithm: "RS256",
-            });
-
-            return res.status(200).send({
-              token: token,
-            });
-          }
-          return res.status(401).send("Login inválido!");
-        });
-      } else {
-        alunoSchema.findOne({ RA: req.body.login }, (err, aluno) => {
-          if (!err) {
-            if (aluno !== null) {
-              const idAluno = aluno._id;
-              const acesso = "user";
-              aluno.validarSenha(req.body.senha, (err, ok) => {
-                if (ok === true) {
-                  const token = jwt.sign({
-                    idAluno,
-                    acesso,
-                    nome: aluno.nome,
-                    email: aluno.email,
-                    ra: aluno.RA,
-                  }, privateKey, {
-                    expiresIn: 900,
-                    algorithm: "RS256",
-                  });
-
-                  return res.status(200).send({
-                    token: token,
-                  });
-                }
-                return res.status(401).send("Login inválido!");
-              });
-            }
-          } else {
-            res.status(401).send(err);
-          }
-        });
-      }
-    } else {
-      res.status(401).send(err);
+  professorSchema.findOne({ email: login }, (err, professor) => {
+    if (err) {
+      return res.status(500).send(err);
     }
+
+    if (professor) {
+      professor.validarSenha(senha, (err, ok) => {
+        if (!ok || err) {
+          return res.status(401).send();
+        }
+
+        return res.status(200).send({
+          token: generateProfessorToken(professor),
+        });
+      });
+      return;
+    } 
+
+    alunoSchema.findOne({ RA: login }, (err, aluno) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      if (!aluno) {
+        return res.status(401).send();
+      }
+
+      aluno.validarSenha(senha, (err, ok) => {
+        if (!ok || err) {
+          return res.status(401).send();
+        }
+
+        return res.status(200).send({
+          token: generateStudentToken(aluno)
+        });
+      });
+    });
   });
 });
 
 // DESLOGAR UM USER
 authRouter.post("/api/logout", async (req, res) => {
-  res.json({ auth: false, token: null, acess: "false" });
+  res.json({ auth: false, token: null, access: false });
 });
 
 // RECUPERAR A SENHA DE UM USER
