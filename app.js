@@ -29,7 +29,7 @@ app.use(alunoRouter)
 app.use(authRouter)
 app.use(professorRouter)
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // DEFININDO A PORTA DO SERVIDOR (PADRÃO 4000)
 const port = process.env.PORT || 4000;

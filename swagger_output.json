@@ -1,0 +1,880 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "AACC API",
+    "description": "Documentação das rotas da API do sistema de AACC da Fatec Campinas"
+  },
+  "host": "localhost:4000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Autenticação"
+    },
+    {
+      "name": "Administrador"
+    },
+    {
+      "name": "Aluno"
+    },
+    {
+      "name": "Professor"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "securityDefinitions": {
+    "token": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-access-token",
+      "description": "Token de acesso do usuário"
+    }
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/professor/todos": {
+      "get": {
+        "tags": [
+          "Administrador"
+        ],
+        "description": "Obter todos os professores",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/professor/{email}": {
+      "get": {
+        "tags": [
+          "Administrador"
+        ],
+        "description": "Obter professor por email",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Administrador"
+        ],
+        "description": "Deletar professor por email",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/professor": {
+      "post": {
+        "tags": [
+          "Administrador"
+        ],
+        "description": "Inserir novo professor",
+        "parameters": [
+          {
+            "name": "professor",
+            "in": "body",
+            "description": "Dados do professor",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Administrador"
+        ],
+        "description": "Atualizar professor",
+        "parameters": [
+          {
+            "name": "professor",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hasOwnProperty": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                }
+              }
+            },
+            "description": "Dados do professor",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividades/todas/{RA}": {
+      "get": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Obter todas as atividades do aluno com base no RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividades/pendentes/{RA}": {
+      "get": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Obter todas as atividades pendentes do aluno com base no RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividades/confirmadas/{RA}": {
+      "get": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Obter todas as atividades confirmadas do aluno com base no RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividades/negadas/{RA}": {
+      "get": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Obter todas as atividades negadas do aluno com base no RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividade/{ID}": {
+      "get": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Obter atividade pelo id",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Deletar uma atividade pelo id",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/atividade": {
+      "post": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Inserir uma nova atividade",
+        "parameters": [
+          {
+            "name": "atividade",
+            "in": "body",
+            "description": "Dados da atividade",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Atualizar uma atividade",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "RA": {
+                  "example": "any"
+                },
+                "status": {
+                  "example": "any"
+                },
+                "_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "description": "Autenticar um usuário",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    },
+    "/api/logout": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "description": "Deslogar um usuário",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/recuperar-senha": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "description": "Recuperar a senha de um usuário",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "RA": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/recuperar-senha/{token}/{ra}": {
+      "get": {
+        "tags": [
+          "Autenticação"
+        ],
+        "description": "Recuperar a senha de um usuário",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "ra",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/uploadexcel": {
+      "post": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Faz upload do excel com dados dos alunos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/obter/atividades/todas": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter todas as atividades",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/obter/atividades/pendentes": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter todas as atividades pendentes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/obter/atividades/confirmadas": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter todas as atividades confirmadas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/obter/atividades/negadas": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter todas as atividades negadas",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/aluno/todos": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter todos os alunos",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/aluno/{RA}": {
+      "get": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Obter aluno pelo RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Deletar um aluno pelo RA",
+        "parameters": [
+          {
+            "name": "RA",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
+    "/api/aluno": {
+      "post": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Inserir um novo aluno",
+        "parameters": [
+          {
+            "name": "aluno",
+            "in": "body",
+            "description": "Dados do aluno",
+            "required": true,
+            "type": "object"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Professor"
+        ],
+        "description": "Atualizar dados de um aluno",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hasOwnProperty": {
+                  "example": "any"
+                },
+                "senha": {
+                  "example": "any"
+                },
+                "RA": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {}
+}
