@@ -90,7 +90,7 @@ authRouter.post("/api/logout", async (req, res) => {
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Deslogar um usuário'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -102,7 +102,7 @@ authRouter.post("/api/recuperar-senha", async (req, res) => {
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Recuperar a senha de um usuário'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -134,7 +134,7 @@ authRouter.get("/api/recuperar-senha/:token/:ra", async (req, res) => {
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Recuperar a senha de um usuário'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 

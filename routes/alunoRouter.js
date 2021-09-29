@@ -38,7 +38,7 @@ alunoRouter.get("/api/atividades/todas/:RA",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades do aluno com base no RA'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -58,7 +58,7 @@ alunoRouter.get("/api/atividades/pendentes/:RA",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades pendentes do aluno com base no RA'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -84,7 +84,7 @@ alunoRouter.get("/api/atividades/confirmadas/:RA",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades confirmadas do aluno com base no RA'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -110,7 +110,7 @@ alunoRouter.get("/api/atividades/negadas/:RA",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades negadas do aluno com base no RA'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -136,7 +136,7 @@ alunoRouter.get("/api/atividade/:ID",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter atividade pelo id'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -155,7 +155,7 @@ alunoRouter.post("/api/atividade",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Inserir uma nova atividade'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }]
     #swagger.parameters['atividade'] = {
       in: 'body',
@@ -183,7 +183,7 @@ alunoRouter.patch("/api/atividade",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Atualizar uma atividade'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 
@@ -217,7 +217,7 @@ alunoRouter.delete("/api/atividade/:ID",
     #swagger.tags = ['Aluno']
     #swagger.description = 'Deletar uma atividade pelo id'
     #swagger.security = [{
-      "apiKeyAuth": []
+      "token": []
     }] 
   */
 

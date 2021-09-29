@@ -20,7 +20,7 @@ const doc = {
   consumes: ['application/json'],
   produces: ['application/json'],
   securityDefinitions: {
-    apiKeyAuth: {
+    token: {
       type: 'apiKey',
       in: 'header',
       name: 'x-access-token',
