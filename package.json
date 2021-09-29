@@ -1,35 +1,38 @@
 {
-  "name": "aacc-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "directories": {
-    "lib": "lib"
-  },
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.0.1",
-    "bcryptjs": "^2.4.3",
-    "convert-excel-to-json": "^1.7.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "fatec-api": "^1.5.0",
-    "googleapis": "^39.2.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.7",
-    "multer": "^1.4.3",
-    "nodemailer": "^6.6.5"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.13"
-  }
+	"name": "aacc-backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"directories": {
+		"lib": "lib"
+	},
+	"scripts": {
+		"start": "node app.js",
+		"dev": "nodemon app.js",
+		"swagger": "node swagger.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^5.0.1",
+		"bcryptjs": "^2.4.3",
+		"convert-excel-to-json": "^1.7.0",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"fatec-api": "^1.5.0",
+		"googleapis": "^39.2.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^6.0.7",
+		"multer": "^1.4.3",
+		"nodemailer": "^6.6.5",
+		"swagger-autogen": "^2.11.2",
+		"swagger-ui-express": "^4.1.6"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.13"
+	}
 }

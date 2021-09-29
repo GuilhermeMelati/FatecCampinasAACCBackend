@@ -2,6 +2,9 @@
 const express = require("express");
 const cors = require('cors');
 const mongoose = require("mongoose");
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
+
 const admRouter = require("./routes/admRouter");
 const alunoRouter = require("./routes/alunoRouter");
 const authRouter = require("./routes/authRouter");
@@ -25,6 +28,8 @@ app.use(admRouter)
 app.use(alunoRouter)
 app.use(authRouter)
 app.use(professorRouter)
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 // DEFININDO A PORTA DO SERVIDOR (PADRÃO 4000)
 const port = process.env.PORT || 4000;
