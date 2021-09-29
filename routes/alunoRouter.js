@@ -162,7 +162,6 @@ alunoRouter.post("/api/atividade",
       description: 'Dados da atividade',
       required: true,
       type: 'object',
-      schema: {}
     }
   */
 

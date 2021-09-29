@@ -64,6 +64,14 @@ const upload = multer({
 })
 
 professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('file'), (req, res) => {
+  /* 
+    #swagger.tags = ['Professor']
+    #swagger.description = 'Faz upload do excel com dados dos alunos'
+    #swagger.security = [{
+      "token": []
+    }] 
+  */
+
   const alunos = tratarXLSX(req.file.originalname)
 
   res.send(alunos.map((demanda) => {
@@ -224,6 +232,12 @@ professorRouter.post(
       #swagger.security = [{
         "token": []
       }] 
+      #swagger.parameters['aluno'] = {
+        in: 'body',
+        description: 'Dados do aluno',
+        required: true,
+        type: 'object',
+      }
     */
     const newAluno = new alunoSchema(req.body);
 
