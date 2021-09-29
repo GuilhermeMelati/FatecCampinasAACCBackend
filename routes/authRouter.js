@@ -37,8 +37,12 @@ const generateStudentToken = (aluno) => (
   })
 )
 
-// AUTENTICAR UM USER
 authRouter.post("/api/login", async (req, res) => {
+  /* 
+    #swagger.tags = ['Autenticação']
+    #swagger.description = 'Autenticar um usuário'
+  */
+
   const { login, senha } = req.body;
 
   professorSchema.findOne({ email: login }, (err, professor) => {
@@ -81,13 +85,27 @@ authRouter.post("/api/login", async (req, res) => {
   });
 });
 
-// DESLOGAR UM USER
 authRouter.post("/api/logout", async (req, res) => {
+  /* 
+    #swagger.tags = ['Autenticação']
+    #swagger.description = 'Deslogar um usuário'
+    #swagger.security = [{
+      "apiKeyAuth": []
+    }] 
+  */
+
   res.json({ auth: false, token: null, access: false });
 });
 
-// RECUPERAR A SENHA DE UM USER
 authRouter.post("/api/recuperar-senha", async (req, res) => {
+   /* 
+    #swagger.tags = ['Autenticação']
+    #swagger.description = 'Recuperar a senha de um usuário'
+    #swagger.security = [{
+      "apiKeyAuth": []
+    }] 
+  */
+
   const RA = req.body.RA;
   alunoSchema.findOne({ RA: RA }, (err, aluno) => {
     if (!err) {
@@ -111,10 +129,18 @@ authRouter.post("/api/recuperar-senha", async (req, res) => {
   });
 });
 
-// RECUPERAR A SENHA DE UM USER
-authRouter.get("/api/recuperar-senha/:token/:ra", async (req, res, next) => {
+authRouter.get("/api/recuperar-senha/:token/:ra", async (req, res) => {
+   /* 
+    #swagger.tags = ['Autenticação']
+    #swagger.description = 'Recuperar a senha de um usuário'
+    #swagger.security = [{
+      "apiKeyAuth": []
+    }] 
+  */
+
   const auth = verificarJWTRecuperar(req.params.token, req.params.ra);
   console.log(auth)
+
   if (auth === true) {
     alunoSchema.findOne({
       RA: req.params.ra,
