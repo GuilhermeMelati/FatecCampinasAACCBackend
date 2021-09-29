@@ -1,4 +1,3 @@
-// REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DA ROTA
 const { Router } = require("express");
 const professorRouter = Router();
 const atividadesSchema = require("../models/atividades");
@@ -11,35 +10,52 @@ const excelToJson = require('convert-excel-to-json')
 const publicKey = fs.readFileSync("./utils/keys/public.key", "utf8");
 require("dotenv/config");
 
-function tratarXLSX(file){
-  const alunos = excelToJson({
-      source: fs.readFileSync(`./uploads/alunos/${file}`),
-      header:{
-        rows: 1
-      },
-      sheets: ['Alunos'],
-      columnToKey: {
-        A: 'nome',
-        B: 'RA',
-        C: 'senha',
-        D: 'email',
-        E: 'horasAprovadas',
-        F: 'horasPendentes',
-        G: 'periodo',
-        H: 'curso'
+const verificarJWTProfessor = async (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  if (!token) {
+    return res.status(401).send({ message: "Token não informado." });
+  }
+
+  jwt.verify(token, publicKey, { algorithm: ["RS256"] }, (err, decoded) => {
+    if (err) {
+      return res.status(500).send({ message: "Token inválido." });
+    } else {
+      if (decoded.acesso === "adm" || decoded.acesso === "professor") {
+        next();
+      } else {
+        return res.status(500).send({ message: "Você não tem permissão." });
       }
+    }
+  });
+}
+
+const tratarXLSX = (file) => {
+  const alunos = excelToJson({
+    source: fs.readFileSync(`./uploads/alunos/${file}`),
+    header:{
+      rows: 1
+    },
+    sheets: ['Alunos'],
+    columnToKey: {
+      A: 'nome',
+      B: 'RA',
+      C: 'senha',
+      D: 'email',
+      E: 'horasAprovadas',
+      F: 'horasPendentes',
+      G: 'periodo',
+      H: 'curso'
+    }
   })
   return alunos.alunos
 }
 
-// ROTAS PARA USO DO PROFESSOR
-
 const destino = multer.diskStorage({
   destination: (req, file, callback) => {
-      callback(null, './uploads/alunos')
+    callback(null, './uploads/alunos')
   },
   filename: (req, file, callback) => {
-      callback(null, file.originalname)
+    callback(null, file.originalname)
   }
 })
 
@@ -63,11 +79,18 @@ professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('f
   }))
 })
 
-// ROTA PARA OBTER TODAS AS ATIVIDADES
 professorRouter.get(
   "/api/obter/atividades/todas",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter todas as atividades'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     atividadesSchema.find((err, atividades) => {
       if (!err) {
         res.status(200).send(atividades);
@@ -78,11 +101,18 @@ professorRouter.get(
   }
 );
 
-// ROTA PARA OBTER ATIVIDADES PENDENTES
 professorRouter.get(
   "/api/obter/atividades/pendentes",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter todas as atividades pendentes'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     atividadesSchema.find({ status: "pendente" }, (err, atividades) => {
       if (!err) {
         res.status(200).send(atividades);
@@ -93,11 +123,18 @@ professorRouter.get(
   }
 );
 
-// ROTA PARA OBTER ATIVIDADES CONFIRMADAS
 professorRouter.get(
   "/api/obter/atividades/confirmadas",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter todas as atividades confirmadas'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     atividadesSchema.find({ status: "confirmada" }, (err, atividades) => {
       if (!err) {
         res.status(200).send(atividades);
@@ -108,11 +145,18 @@ professorRouter.get(
   }
 );
 
-// ROTA PARA OBTER ATIVIDADES NEGADAS
 professorRouter.get(
   "/api/obter/atividades/negadas",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter todas as atividades negadas'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     atividadesSchema.find({ status: "negada" }, (err, atividades) => {
       if (!err) {
         res.status(200).send(atividades);
@@ -123,11 +167,18 @@ professorRouter.get(
   }
 );
 
-// OBTER TODOS OS ALUNOS
 professorRouter.get(
   "/api/aluno/todos",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter todos os alunos'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     alunoSchema.find((err, alunos) => {
       if (!err) {
         res.status(200).send(alunos);
@@ -138,11 +189,18 @@ professorRouter.get(
   }
 );
 
-// OBTER ALUNO COM BASE NO RA
 professorRouter.get(
   "/api/aluno/:RA",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Obter aluno pelo RA'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     alunoSchema.findOne((err, aluno) => {
       {
         RA: req.params.RA;
@@ -156,11 +214,17 @@ professorRouter.get(
   }
 );
 
-// INSERIR UM NOVO ALUNO
 professorRouter.post(
   "/api/aluno",
-
-  async (req, res, next) => {
+  verificarJWTProfessor,
+  async (req, res) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Inserir um novo aluno'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
     const newAluno = new alunoSchema(req.body);
 
     newAluno.save((err) => {
@@ -173,11 +237,18 @@ professorRouter.post(
   }
 );
 
-// ATUALIZAR DADOS DE UM ALUNO
 professorRouter.patch(
   "/api/aluno",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Atualizar dados de um aluno'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     if (req.body.hasOwnProperty("senha")) {
       const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR));
       req.body.senha = await bcrypt.hash(req.body.senha, salt);
@@ -193,11 +264,18 @@ professorRouter.patch(
   }
 );
 
-// DELETAR UM ALUNO
 professorRouter.delete(
   "/api/aluno/:RA",
   verificarJWTProfessor,
   async (req, res, next) => {
+    /* 
+      #swagger.tags = ['Professor']
+      #swagger.description = 'Deletar um aluno pelo RA'
+      #swagger.security = [{
+        "token": []
+      }] 
+    */
+
     alunoSchema.deleteOne({ RA: req.params.RA }, (err) => {
       if (!err) {
         res.status(200).send("Aluno(a) apagado com sucesso!");
@@ -207,25 +285,5 @@ professorRouter.delete(
     });
   }
 );
-
-// VER SE O USER ESTÁ LOGADO
-async function verificarJWTProfessor(req, res, next) {
-  const token = req.headers["x-access-token"];
-  if (!token) {
-    return res.status(401).send({ message: "Token não informado." });
-  }
-
-  jwt.verify(token, publicKey, { algorithm: ["RS256"] }, (err, decoded) => {
-    if (err) {
-      return res.status(500).send({ message: "Token inválido." });
-    } else {
-      if (decoded.acesso === "adm" || decoded.acesso === "professor") {
-        next();
-      } else {
-        return res.status(500).send({ message: "Você não tem permissão." });
-      }
-    }
-  });
-}
 
 module.exports = professorRouter;
