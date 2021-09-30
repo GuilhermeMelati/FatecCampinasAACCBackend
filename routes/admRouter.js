@@ -5,7 +5,7 @@ const admRouter = Router()
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const sanitize = require('mongo-sanitize')
-const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8')
+const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8') || process.env.PUBLIC_KEY
 require('dotenv/config')
 
 const verificarJWTADM = async (req, res, next) => {

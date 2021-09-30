@@ -5,7 +5,6 @@ const mongoose = require('mongoose')
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 const rateLimit = require('express-rate-limit')
-
 const admRouter = require('./routes/admRouter')
 const alunoRouter = require('./routes/alunoRouter')
 const authRouter = require('./routes/authRouter')

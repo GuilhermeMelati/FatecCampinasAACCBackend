@@ -8,7 +8,7 @@ const fs = require('fs')
 const bcrypt = require('bcryptjs')
 const multer = require('multer')
 const excelToJson = require('convert-excel-to-json')
-const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8')
+const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8') || process.env.PUBLIC_KEY
 require('dotenv/config')
 
 const verificarJWTProfessor = async (req, res, next) => {
