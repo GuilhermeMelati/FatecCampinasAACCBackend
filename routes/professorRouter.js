@@ -32,7 +32,7 @@ const verificarJWTProfessor = async (req, res, next) => {
 
 const tratarXLSX = (file) => {
   const alunos = excelToJson({
-    source: fs.readFileSync(`./uploads/alunos/${file}`),
+    source: fs.readFileSync(`${__dirname}/uploads/alunos/${file}`),
     header: {
       rows: 1,
     },
@@ -77,7 +77,8 @@ professorRouter.post(
     }] 
   */
 
-    const alunos = tratarXLSX(req.file.originalname)
+    const arquivo = sanitize(req.file.originalname)
+    const alunos = tratarXLSX(arquivo)
 
     res.send(
       alunos.map((demanda) => {
