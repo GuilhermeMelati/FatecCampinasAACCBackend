@@ -40,7 +40,7 @@
     "application/json"
   ],
   "paths": {
-    "/api/professor/todos": {
+    "\r/api/professor/todos": {
       "get": {
         "tags": [
           "Administrador"
@@ -51,8 +51,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
+          "401": {
+            "description": "Não autorizado"
           },
           "500": {
             "description": "Erro Interno do Servidor"
@@ -65,7 +65,7 @@
         ]
       }
     },
-    "/api/professor/{email}": {
+    "\r/api/professor/{email}": {
       "get": {
         "tags": [
           "Administrador"
@@ -83,8 +83,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
+          "401": {
+            "description": "Não autorizado"
           },
           "500": {
             "description": "Erro Interno do Servidor"
@@ -113,8 +113,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
+          "401": {
+            "description": "Não autorizado"
           },
           "500": {
             "description": "Erro Interno do Servidor"
@@ -146,8 +146,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
+          "401": {
+            "description": "Não autorizado"
           }
         },
         "security": [
@@ -188,8 +188,8 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Solicitação Inválida"
+          "401": {
+            "description": "Não autorizado"
           },
           "500": {
             "description": "Erro Interno do Servidor"
@@ -202,7 +202,7 @@
         ]
       }
     },
-    "/api/atividades/todas/{RA}": {
+    "\r/api/atividades/todas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -234,7 +234,7 @@
         ]
       }
     },
-    "/api/atividades/pendentes/{RA}": {
+    "\r/api/atividades/pendentes/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -266,7 +266,7 @@
         ]
       }
     },
-    "/api/atividades/confirmadas/{RA}": {
+    "\r/api/atividades/confirmadas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -298,7 +298,7 @@
         ]
       }
     },
-    "/api/atividades/negadas/{RA}": {
+    "\r/api/atividades/negadas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -336,36 +336,6 @@
           "Aluno"
         ],
         "description": "Obter atividade pelo id",
-        "parameters": [
-          {
-            "name": "ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        },
-        "security": [
-          {
-            "token": []
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "Aluno"
-        ],
-        "description": "Deletar uma atividade pelo id",
         "parameters": [
           {
             "name": "ID",
@@ -467,29 +437,45 @@
         ]
       }
     },
+    "\r/api/atividade/{ID}": {
+      "delete": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Deletar uma atividade pelo id",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      }
+    },
     "/api/login": {
       "post": {
         "tags": [
           "Autenticação"
         ],
         "description": "Autenticar um usuário",
-        "parameters": [
-          {
-            "name": "obj",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "login": {
-                  "example": "any"
-                },
-                "senha": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "OK"
@@ -539,9 +525,6 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "401": {
             "description": "Não autorizado"
           }
@@ -588,7 +571,7 @@
         ]
       }
     },
-    "/api/uploadexcel": {
+    "\r/api/uploadexcel": {
       "post": {
         "tags": [
           "Professor"
@@ -613,7 +596,7 @@
         ]
       }
     },
-    "/api/obter/atividades/todas": {
+    "\r/api/obter/atividades/todas": {
       "get": {
         "tags": [
           "Professor"
@@ -638,7 +621,7 @@
         ]
       }
     },
-    "/api/obter/atividades/pendentes": {
+    "\r/api/obter/atividades/pendentes": {
       "get": {
         "tags": [
           "Professor"
@@ -663,7 +646,7 @@
         ]
       }
     },
-    "/api/obter/atividades/confirmadas": {
+    "\r/api/obter/atividades/confirmadas": {
       "get": {
         "tags": [
           "Professor"
@@ -688,7 +671,7 @@
         ]
       }
     },
-    "/api/obter/atividades/negadas": {
+    "\r/api/obter/atividades/negadas": {
       "get": {
         "tags": [
           "Professor"
@@ -713,7 +696,7 @@
         ]
       }
     },
-    "/api/aluno/todos": {
+    "\r/api/aluno/todos": {
       "get": {
         "tags": [
           "Professor"
@@ -738,7 +721,7 @@
         ]
       }
     },
-    "/api/aluno/{RA}": {
+    "\r/api/aluno/{RA}": {
       "get": {
         "tags": [
           "Professor"
@@ -831,7 +814,9 @@
             "token": []
           }
         ]
-      },
+      }
+    },
+    "\r/api/aluno": {
       "patch": {
         "tags": [
           "Professor"
