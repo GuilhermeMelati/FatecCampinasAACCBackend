@@ -5,7 +5,7 @@
     "title": "AACC API",
     "description": "Documentação das rotas da API do sistema de AACC da Fatec Campinas"
   },
-  "host": "localhost:4000",
+  "host": "fatec-campinas-aacc.herokuapp.com",
   "basePath": "/",
   "tags": [
     {

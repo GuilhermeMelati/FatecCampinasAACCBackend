@@ -1,6 +1,6 @@
 const swaggerAutogen = require('swagger-autogen')({ language: 'pt-BR' });
 
-const outputFile = './swagger_output.json'
+const outputFile = './swagger.json'
 const endpointsFiles = [
   './routes/admRouter.js',
   './routes/alunoRouter.js',
@@ -14,7 +14,7 @@ const doc = {
     title: "AACC API",
     description: "Documentação das rotas da API do sistema de AACC da Fatec Campinas"
   },
-  host: "localhost:4000",
+  host: "fatec-campinas-aacc.herokuapp.com",
   basePath: "/",
   schemes: ['http', 'https'],
   consumes: ['application/json'],
