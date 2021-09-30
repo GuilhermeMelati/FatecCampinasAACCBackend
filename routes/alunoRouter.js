@@ -151,7 +151,9 @@ alunoRouter.get('/api/atividade/:ID', verificarJWTAluno, async (req, res) => {
     }] 
   */
 
-  atividadeSchema.findById(req.params.ID, (err, atividade) => {
+  const id = sanitize(req.params.ID)
+
+  atividadeSchema.findById(id, (err, atividade) => {
     if (!err) {
       res.status(200).send(atividade)
     } else {
@@ -203,9 +205,12 @@ alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
         statusModificado.enviarEmail(aluno.email, 'localhost:4000', aluno.nome)
       }
 
+      const id = sanitize(req.body._id)
+      const body = sanitize(req.body)
+
       atividadeSchema.findByIdAndUpdate(
-        req.body._id,
-        {$set: req.body},
+        id,
+        {$set: body},
         (err) => {
           if (!err) {
             res.status(200).send('Atividade atualizada com sucesso!')
