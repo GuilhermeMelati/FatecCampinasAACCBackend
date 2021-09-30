@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const atividadeSchema = require('../models/atividades')
 const statusModificado = require('../utils/notificacoes/statusModificado')
-const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8') || process.env.PUBLIC_KEY
+const publicKey = process.env.PUBLIC_KEY
 const sanitize = require('mongo-sanitize')
 const alunoRouter = Router()
 require('dotenv/config')
