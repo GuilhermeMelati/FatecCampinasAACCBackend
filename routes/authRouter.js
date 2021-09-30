@@ -7,8 +7,8 @@ const alunoSchema = require('../models/alunos')
 const authRouter = Router()
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-const privateKey = fs.readFileSync('./utils/keys/private.key', 'utf8') || process.env.PRIVATE_KEY
-const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8') || process.env.PUBLIC_KEY
+const privateKey = process.env.PRIVATE_KEY
+const publicKey = process.env.PUBLIC_KEY
 require('dotenv/config')
 
 const generateProfessorToken = (professor) => {
