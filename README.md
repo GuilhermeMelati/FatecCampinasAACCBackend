@@ -4,6 +4,7 @@
 # Sistema AACC - Backend | Fatec Campinas 👨‍💻
 
 Sistema para cadastro de atividades extra curriculares da Fatec Campinas!
+[Acessse a documentação completa!](https://fatec-campinas-aacc.herokuapp.com/docs/)  
 
 ## Autores
 
