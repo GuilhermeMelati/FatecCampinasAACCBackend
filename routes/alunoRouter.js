@@ -1,11 +1,10 @@
 const {Router} = require('express')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-
 const atividadeSchema = require('../models/atividades')
 const statusModificado = require('../utils/notificacoes/statusModificado')
 const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8')
-
+const sanitize = require('mongo-sanitize')
 const alunoRouter = Router()
 require('dotenv/config')
 
@@ -44,7 +43,8 @@ alunoRouter.get(
     }] 
   */
 
-    const RA = req.params.RA
+    const RA = sanitize(req.params.RA)
+
     atividadeSchema.find({RA: RA}, (err, atividades) => {
       if (!err) {
         res.status(200).send(atividades)
@@ -67,7 +67,7 @@ alunoRouter.get(
     }] 
   */
 
-    const RA = req.params.RA
+    const RA = sanitize(req.params.RA)
     atividadeSchema.find(
       {
         RA: RA,
@@ -96,7 +96,7 @@ alunoRouter.get(
     }] 
   */
 
-    const RA = req.params.RA
+    const RA = sanitize(req.params.RA)
     atividadeSchema.find(
       {
         RA: RA,
@@ -125,7 +125,7 @@ alunoRouter.get(
     }] 
   */
 
-    const RA = req.params.RA
+    const RA = sanitize(req.params.RA)
     atividadeSchema.find(
       {
         RA: RA,
@@ -175,7 +175,7 @@ alunoRouter.post('/api/atividade', verificarJWTAluno, async (req, res) => {
     }
   */
 
-  const newAtividade = new atividadeSchema(req.body)
+  const newAtividade = new atividadeSchema(sanitize(req.body))
 
   newAtividade.save((err) => {
     if (!err) {
@@ -195,7 +195,8 @@ alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
     }] 
   */
 
-  const RA = req.body.RA
+  const RA = sanitize(req.body.RA)
+
   alunoSchema.findOne({RA: RA}, (err, aluno) => {
     if (!err) {
       if (req.body.status) {
@@ -231,7 +232,9 @@ alunoRouter.delete(
     }] 
   */
 
-    atividadeSchema.findByIdAndRemove(req.params.ID, (err) => {
+    const id = sanitize(req.params.ID)
+
+    atividadeSchema.findByIdAndRemove(id, (err) => {
       if (!err) {
         res.status(200).send('Atividade deletada com sucesso!')
       } else {

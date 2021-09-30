@@ -1,39 +1,40 @@
-const { Router } = require("express");
-const professorRouter = Router();
-const atividadesSchema = require("../models/atividades");
-const alunoSchema = require("../models/alunos");
-const jwt = require("jsonwebtoken");
-const fs = require("fs");
-const bcrypt = require("bcryptjs");
+const {Router} = require('express')
+const professorRouter = Router()
+const atividadesSchema = require('../models/atividades')
+const alunoSchema = require('../models/alunos')
+const sanitize = require('mongo-sanitize')
+const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const bcrypt = require('bcryptjs')
 const multer = require('multer')
 const excelToJson = require('convert-excel-to-json')
-const publicKey = fs.readFileSync("./utils/keys/public.key", "utf8");
-require("dotenv/config");
+const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8')
+require('dotenv/config')
 
 const verificarJWTProfessor = async (req, res, next) => {
-  const token = req.headers["x-access-token"];
+  const token = req.headers['x-access-token']
   if (!token) {
-    return res.status(401).send({ message: "Token não informado." });
+    return res.status(401).send({message: 'Token não informado.'})
   }
 
-  jwt.verify(token, publicKey, { algorithm: ["RS256"] }, (err, decoded) => {
+  jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
     if (err) {
-      return res.status(500).send({ message: "Token inválido." });
+      return res.status(500).send({message: 'Token inválido.'})
     } else {
-      if (decoded.acesso === "adm" || decoded.acesso === "professor") {
-        next();
+      if (decoded.acesso === 'adm' || decoded.acesso === 'professor') {
+        next()
       } else {
-        return res.status(500).send({ message: "Você não tem permissão." });
+        return res.status(500).send({message: 'Você não tem permissão.'})
       }
     }
-  });
+  })
 }
 
 const tratarXLSX = (file) => {
   const alunos = excelToJson({
     source: fs.readFileSync(`./uploads/alunos/${file}`),
-    header:{
-      rows: 1
+    header: {
+      rows: 1,
     },
     sheets: ['Alunos'],
     columnToKey: {
@@ -44,8 +45,8 @@ const tratarXLSX = (file) => {
       E: 'horasAprovadas',
       F: 'horasPendentes',
       G: 'periodo',
-      H: 'curso'
-    }
+      H: 'curso',
+    },
   })
   return alunos.alunos
 }
@@ -56,15 +57,19 @@ const destino = multer.diskStorage({
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname)
-  }
+  },
 })
 
 const upload = multer({
-  storage: destino
+  storage: destino,
 })
 
-professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('file'), (req, res) => {
-  /* 
+professorRouter.post(
+  '/api/uploadexcel',
+  verificarJWTProfessor,
+  upload.single('file'),
+  (req, res) => {
+    /* 
     #swagger.tags = ['Professor']
     #swagger.description = 'Faz upload do excel com dados dos alunos'
     #swagger.security = [{
@@ -72,23 +77,26 @@ professorRouter.post('/api/uploadexcel', verificarJWTProfessor, upload.single('f
     }] 
   */
 
-  const alunos = tratarXLSX(req.file.originalname)
+    const alunos = tratarXLSX(req.file.originalname)
 
-  res.send(alunos.map((demanda) => {
-    const newAluno = new alunoSchema(demanda);
+    res.send(
+      alunos.map((demanda) => {
+        const newAluno = new alunoSchema(demanda)
 
-    newAluno.save((err) => {
-      if (!err) {
-        res.status(200).send("Aluno(a) inserido com sucesso!");
-      } else {
-        res.status(401).send(err);
-      }
-    });
-  }))
-})
+        newAluno.save((err) => {
+          if (!err) {
+            res.status(200).send('Aluno(a) inserido com sucesso!')
+          } else {
+            res.status(401).send(err)
+          }
+        })
+      })
+    )
+  }
+)
 
 professorRouter.get(
-  "/api/obter/atividades/todas",
+  '/api/obter/atividades/todas',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -101,16 +109,16 @@ professorRouter.get(
 
     atividadesSchema.find((err, atividades) => {
       if (!err) {
-        res.status(200).send(atividades);
+        res.status(200).send(atividades)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.get(
-  "/api/obter/atividades/pendentes",
+  '/api/obter/atividades/pendentes',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -121,18 +129,18 @@ professorRouter.get(
       }] 
     */
 
-    atividadesSchema.find({ status: "pendente" }, (err, atividades) => {
+    atividadesSchema.find({status: 'pendente'}, (err, atividades) => {
       if (!err) {
-        res.status(200).send(atividades);
+        res.status(200).send(atividades)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.get(
-  "/api/obter/atividades/confirmadas",
+  '/api/obter/atividades/confirmadas',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -143,18 +151,18 @@ professorRouter.get(
       }] 
     */
 
-    atividadesSchema.find({ status: "confirmada" }, (err, atividades) => {
+    atividadesSchema.find({status: 'confirmada'}, (err, atividades) => {
       if (!err) {
-        res.status(200).send(atividades);
+        res.status(200).send(atividades)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.get(
-  "/api/obter/atividades/negadas",
+  '/api/obter/atividades/negadas',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -165,18 +173,18 @@ professorRouter.get(
       }] 
     */
 
-    atividadesSchema.find({ status: "negada" }, (err, atividades) => {
+    atividadesSchema.find({status: 'negada'}, (err, atividades) => {
       if (!err) {
-        res.status(200).send(atividades);
+        res.status(200).send(atividades)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.get(
-  "/api/aluno/todos",
+  '/api/aluno/todos',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -189,16 +197,16 @@ professorRouter.get(
 
     alunoSchema.find((err, alunos) => {
       if (!err) {
-        res.status(200).send(alunos);
+        res.status(200).send(alunos)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.get(
-  "/api/aluno/:RA",
+  '/api/aluno/:RA',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -209,24 +217,23 @@ professorRouter.get(
       }] 
     */
 
+    const RA = sanitize(req.params.RA)
+
     alunoSchema.findOne((err, aluno) => {
       {
-        RA: req.params.RA;
+        RA: RA
       }
       if (!err) {
-        res.status(200).send(aluno);
+        res.status(200).send(aluno)
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
-professorRouter.post(
-  "/api/aluno",
-  verificarJWTProfessor,
-  async (req, res) => {
-    /* 
+professorRouter.post('/api/aluno', verificarJWTProfessor, async (req, res) => {
+  /* 
       #swagger.tags = ['Professor']
       #swagger.description = 'Inserir um novo aluno'
       #swagger.security = [{
@@ -239,20 +246,19 @@ professorRouter.post(
         type: 'object',
       }
     */
-    const newAluno = new alunoSchema(req.body);
+  const newAluno = new alunoSchema(sanitize(req.body))
 
-    newAluno.save((err) => {
-      if (!err) {
-        res.status(200).send("Aluno(a) inserido com sucesso!");
-      } else {
-        res.status(401).send(err);
-      }
-    });
-  }
-);
+  newAluno.save((err) => {
+    if (!err) {
+      res.status(200).send('Aluno(a) inserido com sucesso!')
+    } else {
+      res.status(401).send(err)
+    }
+  })
+})
 
 professorRouter.patch(
-  "/api/aluno",
+  '/api/aluno',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -263,23 +269,26 @@ professorRouter.patch(
       }] 
     */
 
-    if (req.body.hasOwnProperty("senha")) {
-      const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR));
-      req.body.senha = await bcrypt.hash(req.body.senha, salt);
+    if (req.body.hasOwnProperty('senha')) {
+      const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
+      req.body.senha = await bcrypt.hash(req.body.senha, salt)
     }
 
-    alunoSchema.updateOne({ RA: req.body.RA }, { $set: req.body }, (err) => {
+    const RA = sanitize(req.body.RA)
+    const body = sanitize(req.body)
+
+    alunoSchema.updateOne({RA: RA}, {$set: body}, (err) => {
       if (!err) {
-        res.status(200).send("Aluno(a) atualizado com sucesso!");
+        res.status(200).send('Aluno(a) atualizado com sucesso!')
       } else {
-        res.status(401).send(err);
+        res.status(401).send(err)
       }
-    });
+    })
   }
-);
+)
 
 professorRouter.delete(
-  "/api/aluno/:RA",
+  '/api/aluno/:RA',
   verificarJWTProfessor,
   async (req, res, next) => {
     /* 
@@ -290,14 +299,16 @@ professorRouter.delete(
       }] 
     */
 
-    alunoSchema.deleteOne({ RA: req.params.RA }, (err) => {
-      if (!err) {
-        res.status(200).send("Aluno(a) apagado com sucesso!");
-      } else {
-        res.status(401).send(err);
-      }
-    });
-  }
-);
+    const RA = sanitize(req.params.RA)
 
-module.exports = professorRouter;
+    alunoSchema.deleteOne({RA: RA}, (err) => {
+      if (!err) {
+        res.status(200).send('Aluno(a) apagado com sucesso!')
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
+)
+
+module.exports = professorRouter

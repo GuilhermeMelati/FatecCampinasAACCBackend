@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 const admRouter = Router()
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
-const sanitize = require('mongo-sanitize');
+const sanitize = require('mongo-sanitize')
 const publicKey = fs.readFileSync('./utils/keys/public.key', 'utf8')
 require('dotenv/config')
 
@@ -122,9 +122,10 @@ admRouter.patch('/api/professor', verificarJWTADM, async (req, res, next) => {
     req.body.senha = await bcrypt.hash(req.body.senha, salt)
   }
 
-  const email = req.body.email
+  const email = sanitize(req.body.email)
+  const body = sanitize(req.body)
 
-  professorSchema.updateOne({email: email}, {$set: req.body}, (err) => {
+  professorSchema.updateOne({email: email}, {$set: body}, (err) => {
     if (!err) {
       res.status(200).send('Professor(a) atualizado com sucesso!')
     } else {
@@ -145,7 +146,9 @@ admRouter.delete(
     }]
   */
 
-    professorSchema.deleteOne({email: req.params.email}, (err) => {
+    const email = sanitize(req.params.email)
+
+    professorSchema.deleteOne({email: email}, (err) => {
       if (!err) {
         res.status(200).send('Professor(a) apagado com sucesso!')
       } else {
