@@ -1,4 +1,3 @@
-// REQUIRES NECESSÁRIOS PARA A IMPLEMENTAÇÃO DA ROTA
 const {Router} = require('express')
 const recuperarSenha = require('../utils/notificacoes/recuperarSenha')
 const sanitize = require('mongo-sanitize')
@@ -49,9 +48,19 @@ authRouter.post('/api/login', async (req, res) => {
   /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Autenticar um usuário'
+    #swagger.parameters['login'] = {
+      in: 'body',
+      description: 'Dados do login',
+      required: true,
+      type: 'object',
+      schema: {
+        $login: '',
+        $senha: '',
+      }
+    }
   */
 
-  const {login, senha} = sanitize(req.body)
+  const { login, senha } = sanitize(req.body)
 
   professorSchema.findOne({email: login}, (err, professor) => {
     if (err) {

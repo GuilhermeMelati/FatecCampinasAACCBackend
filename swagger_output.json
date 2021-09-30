@@ -40,7 +40,7 @@
     "application/json"
   ],
   "paths": {
-    "\r/api/professor/todos": {
+    "/api/professor/todos": {
       "get": {
         "tags": [
           "Administrador"
@@ -65,7 +65,7 @@
         ]
       }
     },
-    "\r/api/professor/{email}": {
+    "/api/professor/{email}": {
       "get": {
         "tags": [
           "Administrador"
@@ -202,7 +202,7 @@
         ]
       }
     },
-    "\r/api/atividades/todas/{RA}": {
+    "/api/atividades/todas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -234,7 +234,7 @@
         ]
       }
     },
-    "\r/api/atividades/pendentes/{RA}": {
+    "/api/atividades/pendentes/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -266,7 +266,7 @@
         ]
       }
     },
-    "\r/api/atividades/confirmadas/{RA}": {
+    "/api/atividades/confirmadas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -298,7 +298,7 @@
         ]
       }
     },
-    "\r/api/atividades/negadas/{RA}": {
+    "/api/atividades/negadas/{RA}": {
       "get": {
         "tags": [
           "Aluno"
@@ -336,6 +336,36 @@
           "Aluno"
         ],
         "description": "Obter atividade pelo id",
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Aluno"
+        ],
+        "description": "Deletar uma atividade pelo id",
         "parameters": [
           {
             "name": "ID",
@@ -437,45 +467,38 @@
         ]
       }
     },
-    "\r/api/atividade/{ID}": {
-      "delete": {
-        "tags": [
-          "Aluno"
-        ],
-        "description": "Deletar uma atividade pelo id",
-        "parameters": [
-          {
-            "name": "ID",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Não autorizado"
-          },
-          "500": {
-            "description": "Erro Interno do Servidor"
-          }
-        },
-        "security": [
-          {
-            "token": []
-          }
-        ]
-      }
-    },
     "/api/login": {
       "post": {
         "tags": [
           "Autenticação"
         ],
         "description": "Autenticar um usuário",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "description": "Dados do login",
+            "required": true,
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string",
+                  "example": ""
+                },
+                "senha": {
+                  "type": "string",
+                  "example": ""
+                }
+              },
+              "required": [
+                "login",
+                "senha"
+              ]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -525,6 +548,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Não autorizado"
           }
@@ -571,7 +597,7 @@
         ]
       }
     },
-    "\r/api/uploadexcel": {
+    "/api/uploadexcel": {
       "post": {
         "tags": [
           "Professor"
@@ -596,7 +622,7 @@
         ]
       }
     },
-    "\r/api/obter/atividades/todas": {
+    "/api/obter/atividades/todas": {
       "get": {
         "tags": [
           "Professor"
@@ -621,7 +647,7 @@
         ]
       }
     },
-    "\r/api/obter/atividades/pendentes": {
+    "/api/obter/atividades/pendentes": {
       "get": {
         "tags": [
           "Professor"
@@ -646,7 +672,7 @@
         ]
       }
     },
-    "\r/api/obter/atividades/confirmadas": {
+    "/api/obter/atividades/confirmadas": {
       "get": {
         "tags": [
           "Professor"
@@ -671,7 +697,7 @@
         ]
       }
     },
-    "\r/api/obter/atividades/negadas": {
+    "/api/obter/atividades/negadas": {
       "get": {
         "tags": [
           "Professor"
@@ -696,7 +722,7 @@
         ]
       }
     },
-    "\r/api/aluno/todos": {
+    "/api/aluno/todos": {
       "get": {
         "tags": [
           "Professor"
@@ -721,7 +747,7 @@
         ]
       }
     },
-    "\r/api/aluno/{RA}": {
+    "/api/aluno/{RA}": {
       "get": {
         "tags": [
           "Professor"
@@ -814,9 +840,7 @@
             "token": []
           }
         ]
-      }
-    },
-    "\r/api/aluno": {
+      },
       "patch": {
         "tags": [
           "Professor"
