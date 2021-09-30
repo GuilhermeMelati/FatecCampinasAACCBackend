@@ -234,19 +234,19 @@ professorRouter.get(
 )
 
 professorRouter.post('/api/aluno', verificarJWTProfessor, async (req, res) => {
-  /* 
-      #swagger.tags = ['Professor']
-      #swagger.description = 'Inserir um novo aluno'
-      #swagger.security = [{
-        "token": []
-      }] 
-      #swagger.parameters['aluno'] = {
-        in: 'body',
-        description: 'Dados do aluno',
-        required: true,
-        type: 'object',
-      }
-    */
+  /*
+    #swagger.tags = ['Professor']
+    #swagger.description = 'Inserir um novo aluno'
+    #swagger.security = [{
+      "token": []
+    }] 
+    #swagger.parameters['aluno'] = {
+      in: 'body',
+      description: 'Dados do aluno',
+      required: true,
+      type: 'object',
+    }
+  */
   const newAluno = new alunoSchema(sanitize(req.body))
 
   newAluno.save((err) => {
