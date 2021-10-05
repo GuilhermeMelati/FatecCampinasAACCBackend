@@ -21,8 +21,8 @@ const atividadeSchema = new mongoose.Schema({
     type: String,
     required: [true, "Por favor, forneça a data de inicio da atividade."],
   },
-  termino: {
-    type: String,
+  horas: {
+    type: Number,
     required: [true, "Por favor, forneça a data de termino da atividade."],
   },
   cidade: {
@@ -47,9 +47,9 @@ const atividadeSchema = new mongoose.Schema({
   indicacaoProfessor: {
     type: String,
   },
-  dataDeEnvio: {
+  status: {
     type: String,
-    required: [true],
+    default: 'pendente'
   },
   professor: {
     type: String,
@@ -57,16 +57,15 @@ const atividadeSchema = new mongoose.Schema({
   dataDaRespostaDoProfessor: {
     type: String,
   },
-  status: {
-    type: String,
-    required: [true],
-  },
   horasTotais: {
     type: Number,
   },
   comentariosProfessor: {
     type: String,
   },
+},
+{
+  timestamps: true
 });
 
 module.exports = mongoose.model("Atividade", atividadeSchema);
