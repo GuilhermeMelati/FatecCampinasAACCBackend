@@ -118,9 +118,6 @@ authRouter.post('/api/recuperar-senha', async (req, res) => {
   /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Recuperar a senha de um usuário'
-    #swagger.security = [{
-      "token": []
-    }] 
   */
 
   const RA = sanitize(req.body.RA)
@@ -133,7 +130,7 @@ authRouter.post('/api/recuperar-senha', async (req, res) => {
           expiresIn: 900,
           algorithm: 'RS256',
         })
-        const link = `http://localhost:4010/api/recuper/senha/${token}/${aluno.RA}`
+        const link = `${process.env.APPLICATION_URL}/recovery-password?token=${token}&ra=${aluno.RA}`
         recuperarSenha.enviarEmail(aluno.email, link, aluno.nome)
         return res
           .status(200)
