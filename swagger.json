@@ -21,10 +21,7 @@
       "name": "Professor"
     }
   ],
-  "schemes": [
-    "http",
-    "https"
-  ],
+  "schemes": ["http", "https"],
   "securityDefinitions": {
     "token": {
       "type": "apiKey",
@@ -33,18 +30,12 @@
       "description": "Token de acesso do usuário"
     }
   },
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
   "paths": {
     "/api/professor/todos": {
       "get": {
-        "tags": [
-          "Administrador"
-        ],
+        "tags": ["Administrador"],
         "description": "Obter todos os professores",
         "parameters": [],
         "responses": {
@@ -67,9 +58,7 @@
     },
     "/api/professor/{email}": {
       "get": {
-        "tags": [
-          "Administrador"
-        ],
+        "tags": ["Administrador"],
         "description": "Obter professor por email",
         "parameters": [
           {
@@ -97,9 +86,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "Administrador"
-        ],
+        "tags": ["Administrador"],
         "description": "Deletar professor por email",
         "parameters": [
           {
@@ -129,9 +116,7 @@
     },
     "/api/professor": {
       "post": {
-        "tags": [
-          "Administrador"
-        ],
+        "tags": ["Administrador"],
         "description": "Inserir novo professor",
         "parameters": [
           {
@@ -157,9 +142,7 @@
         ]
       },
       "patch": {
-        "tags": [
-          "Administrador"
-        ],
+        "tags": ["Administrador"],
         "description": "Atualizar professor",
         "parameters": [
           {
@@ -204,9 +187,7 @@
     },
     "/api/atividades/todas/{RA}": {
       "get": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Obter todas as atividades do aluno com base no RA",
         "parameters": [
           {
@@ -236,9 +217,7 @@
     },
     "/api/atividades/pendentes/{RA}": {
       "get": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Obter todas as atividades pendentes do aluno com base no RA",
         "parameters": [
           {
@@ -268,9 +247,7 @@
     },
     "/api/atividades/confirmadas/{RA}": {
       "get": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Obter todas as atividades confirmadas do aluno com base no RA",
         "parameters": [
           {
@@ -300,9 +277,7 @@
     },
     "/api/atividades/negadas/{RA}": {
       "get": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Obter todas as atividades negadas do aluno com base no RA",
         "parameters": [
           {
@@ -332,9 +307,7 @@
     },
     "/api/atividade/{ID}": {
       "get": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Obter atividade pelo id",
         "parameters": [
           {
@@ -362,9 +335,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Deletar uma atividade pelo id",
         "parameters": [
           {
@@ -394,9 +365,7 @@
     },
     "/api/atividade": {
       "post": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Inserir uma nova atividade",
         "parameters": [
           {
@@ -425,9 +394,7 @@
         ]
       },
       "patch": {
-        "tags": [
-          "Aluno"
-        ],
+        "tags": ["Aluno"],
         "description": "Atualizar uma atividade",
         "parameters": [
           {
@@ -469,9 +436,7 @@
     },
     "/api/login": {
       "post": {
-        "tags": [
-          "Autenticação"
-        ],
+        "tags": ["Autenticação"],
         "description": "Autenticar um usuário",
         "parameters": [
           {
@@ -492,10 +457,7 @@
                   "example": ""
                 }
               },
-              "required": [
-                "login",
-                "senha"
-              ]
+              "required": ["login", "senha"]
             }
           }
         ],
@@ -514,9 +476,7 @@
     },
     "/api/logout": {
       "post": {
-        "tags": [
-          "Autenticação"
-        ],
+        "tags": ["Autenticação"],
         "description": "Deslogar um usuário",
         "parameters": [],
         "responses": {},
@@ -529,9 +489,7 @@
     },
     "/api/recuperar-senha": {
       "post": {
-        "tags": [
-          "Autenticação"
-        ],
+        "tags": ["Autenticação"],
         "description": "Recuperar a senha de um usuário",
         "parameters": [
           {
@@ -557,9 +515,7 @@
         }
       },
       "patch": {
-        "tags": [
-          "Autenticação"
-        ],
+        "tags": ["Autenticação"],
         "description": "Altera a senha de um usuário",
         "parameters": [
           {
@@ -601,9 +557,7 @@
     },
     "/api/recuperar-senha/{token}/{ra}": {
       "get": {
-        "tags": [
-          "Autenticação"
-        ],
+        "tags": ["Autenticação"],
         "description": "Recuperar a senha de um usuário",
         "parameters": [
           {
@@ -636,9 +590,7 @@
     },
     "/api/uploadexcel": {
       "post": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Faz upload do excel com dados dos alunos",
         "parameters": [],
         "responses": {
@@ -661,9 +613,7 @@
     },
     "/api/obter/atividades/todas": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter todas as atividades",
         "parameters": [],
         "responses": {
@@ -686,9 +636,7 @@
     },
     "/api/obter/atividades/pendentes": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter todas as atividades pendentes",
         "parameters": [],
         "responses": {
@@ -711,9 +659,7 @@
     },
     "/api/obter/atividades/confirmadas": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter todas as atividades confirmadas",
         "parameters": [],
         "responses": {
@@ -736,9 +682,7 @@
     },
     "/api/obter/atividades/negadas": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter todas as atividades negadas",
         "parameters": [],
         "responses": {
@@ -761,9 +705,7 @@
     },
     "/api/aluno/todos": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter todos os alunos",
         "parameters": [],
         "responses": {
@@ -786,9 +728,7 @@
     },
     "/api/aluno/{RA}": {
       "get": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Obter aluno pelo RA",
         "parameters": [
           {
@@ -816,9 +756,7 @@
         ]
       },
       "delete": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Deletar um aluno pelo RA",
         "parameters": [
           {
@@ -848,9 +786,7 @@
     },
     "/api/aluno": {
       "post": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Inserir um novo aluno",
         "parameters": [
           {
@@ -879,9 +815,7 @@
         ]
       },
       "patch": {
-        "tags": [
-          "Professor"
-        ],
+        "tags": ["Professor"],
         "description": "Atualizar dados de um aluno",
         "parameters": [
           {

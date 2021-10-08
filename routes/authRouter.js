@@ -12,60 +12,60 @@ const publicKey = process.env.PUBLIC_KEY
 require('dotenv/config')
 
 const generateProfessorToken = (professor) => {
-	const acesso = professor.superUser ? 'adm' : 'professor'
+  const acesso = professor.superUser ? 'adm' : 'professor'
 
-	return jwt.sign(
-		{
-			id: professor._id,
-			acesso,
-			email: professor.email,
-			nome: professor.nome,
-		},
-		privateKey,
-		{
-			expiresIn: 900,
-			algorithm: 'RS256',
-		}
-	)
+  return jwt.sign(
+    {
+      id: professor._id,
+      acesso,
+      email: professor.email,
+      nome: professor.nome,
+    },
+    privateKey,
+    {
+      expiresIn: 900,
+      algorithm: 'RS256',
+    }
+  )
 }
 
 const generateStudentToken = (aluno) =>
-	jwt.sign(
-		{
-			id: aluno._id,
-			acesso: 'user',
-			nome: aluno.nome,
-			email: aluno.email,
-			ra: aluno.RA,
-		},
-		privateKey,
-		{
-			expiresIn: 900,
-			algorithm: 'RS256',
-		}
-	)
+  jwt.sign(
+    {
+      id: aluno._id,
+      acesso: 'user',
+      nome: aluno.nome,
+      email: aluno.email,
+      ra: aluno.RA,
+    },
+    privateKey,
+    {
+      expiresIn: 900,
+      algorithm: 'RS256',
+    }
+  )
 
 const verificarJWTRecuperaSenha = async (req, res, next) => {
-	var token = req.headers['x-access-token']
-	if (!token) {
-		return res.status(401).send({message: 'Token não informado.'})
-	}
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({message: 'Token não informado.'})
+  }
 
-	jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
-		if (err) {
-			return res.status(500).send({message: 'Token inválido.'})
-		} else {
-			if (decoded.acesso === 'recuperar' && decoded.RA === req.body.RA) {
-				next()
-			} else {
-				return res.status(500).send({message: 'Você não tem permissão.'})
-			}
-		}
-	})
+  jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
+    if (err) {
+      return res.status(500).send({message: 'Token inválido.'})
+    } else {
+      if (decoded.acesso === 'recuperar' && decoded.RA === req.body.RA) {
+        next()
+      } else {
+        return res.status(500).send({message: 'Você não tem permissão.'})
+      }
+    }
+  })
 }
 
 authRouter.post('/api/login', async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Autenticar um usuário'
     #swagger.parameters['login'] = {
@@ -80,50 +80,50 @@ authRouter.post('/api/login', async (req, res) => {
     }
   */
 
-	const {login, senha} = sanitize(req.body)
+  const {login, senha} = sanitize(req.body)
 
-	professorSchema.findOne({email: login}, (err, professor) => {
-		if (err) {
-			return res.status(500).send(err)
-		}
+  professorSchema.findOne({email: login}, (err, professor) => {
+    if (err) {
+      return res.status(500).send(err)
+    }
 
-		if (professor) {
-			professor.validarSenha(senha, (err, ok) => {
-				if (!ok || err) {
-					return res.status(401).send(err)
-				}
+    if (professor) {
+      professor.validarSenha(senha, (err, ok) => {
+        if (!ok || err) {
+          return res.status(401).send(err)
+        }
 
-				return res.status(200).send({
-					token: generateProfessorToken(professor),
-				})
-			})
-			return
-		}
+        return res.status(200).send({
+          token: generateProfessorToken(professor),
+        })
+      })
+      return
+    }
 
-		alunoSchema.findOne({RA: login}, (err, aluno) => {
-			if (err) {
-				return res.status(500).send(err)
-			}
+    alunoSchema.findOne({RA: login}, (err, aluno) => {
+      if (err) {
+        return res.status(500).send(err)
+      }
 
-			if (!aluno) {
-				return res.status(401).send(err)
-			}
+      if (!aluno) {
+        return res.status(401).send(err)
+      }
 
-			aluno.validarSenha(senha, (err, ok) => {
-				if (!ok || err) {
-					return res.status(401).send(err)
-				}
+      aluno.validarSenha(senha, (err, ok) => {
+        if (!ok || err) {
+          return res.status(401).send(err)
+        }
 
-				return res.status(200).send({
-					token: generateStudentToken(aluno),
-				})
-			})
-		})
-	})
+        return res.status(200).send({
+          token: generateStudentToken(aluno),
+        })
+      })
+    })
+  })
 })
 
 authRouter.post('/api/logout', async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Deslogar um usuário'
     #swagger.security = [{
@@ -131,41 +131,41 @@ authRouter.post('/api/logout', async (req, res) => {
     }] 
   */
 
-	res.json({auth: false, token: null, access: false})
+  res.json({auth: false, token: null, access: false})
 })
 
 authRouter.post('/api/recuperar-senha', async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Recuperar a senha de um usuário'
   */
 
-	const RA = sanitize(req.body.RA)
-	alunoSchema.findOne({RA: RA}, (err, aluno) => {
-		if (!err) {
-			if (aluno !== null) {
-				const RA = aluno.RA
-				const acesso = 'recuperar'
-				const token = jwt.sign({RA, acesso}, privateKey, {
-					expiresIn: 900,
-					algorithm: 'RS256',
-				})
-				console.log(token)
-				const link = `${process.env.APPLICATION_URL}/recovery-password?token=${token}&ra=${aluno.RA}`
-				recuperarSenha.enviarEmail(aluno.email, link, aluno.nome)
-				return res
-					.status(200)
-					.send('Foi enviado no seu email o link para recuperar sua senha!')
-			}
-			return res.status(401).send('Nenhum aluno encontrado com esse RA!')
-		} else {
-			res.status(401).send(err)
-		}
-	})
+  const RA = sanitize(req.body.RA)
+  alunoSchema.findOne({RA: RA}, (err, aluno) => {
+    if (!err) {
+      if (aluno !== null) {
+        const RA = aluno.RA
+        const acesso = 'recuperar'
+        const token = jwt.sign({RA, acesso}, privateKey, {
+          expiresIn: 900,
+          algorithm: 'RS256',
+        })
+        console.log(token)
+        const link = `${process.env.APPLICATION_URL}/recovery-password?token=${token}&ra=${aluno.RA}`
+        recuperarSenha.enviarEmail(aluno.email, link, aluno.nome)
+        return res
+          .status(200)
+          .send('Foi enviado no seu email o link para recuperar sua senha!')
+      }
+      return res.status(401).send('Nenhum aluno encontrado com esse RA!')
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 authRouter.get('/api/recuperar-senha/:token/:ra', async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Recuperar a senha de um usuário'
     #swagger.security = [{
@@ -173,89 +173,89 @@ authRouter.get('/api/recuperar-senha/:token/:ra', async (req, res) => {
     }] 
   */
 
-	const auth = verificarJWTEmail(req.params.token, req.params.ra)
+  const auth = verificarJWTEmail(req.params.token, req.params.ra)
 
-	const RA = sanitize(req.params.ra)
+  const RA = sanitize(req.params.ra)
 
-	if (auth === true) {
-		alunoSchema.findOne(
-			{
-				RA: RA,
-			},
-			(err, document) => {
-				if (!err) {
-					res.status(200).send(document)
-				} else {
-					res.status(401).send(err)
-				}
-			}
-		)
-	} else {
-		res.status(401).send('Você não tem permissão.')
-	}
+  if (auth === true) {
+    alunoSchema.findOne(
+      {
+        RA: RA,
+      },
+      (err, document) => {
+        if (!err) {
+          res.status(200).send(document)
+        } else {
+          res.status(401).send(err)
+        }
+      }
+    )
+  } else {
+    res.status(401).send('Você não tem permissão.')
+  }
 })
 
 authRouter.patch(
-	'/api/recuperar-senha',
-	verificarJWTRecuperaSenha,
-	async (req, res, next) => {
-		/* 
+  '/api/recuperar-senha',
+  verificarJWTRecuperaSenha,
+  async (req, res, next) => {
+    /* 
     #swagger.tags = ['Autenticação']
     #swagger.description = 'Altera a senha de um usuário'
     #swagger.security = [{
       "token": []
     }] 
   */
-		console.log(req.body.senha)
+    console.log(req.body.senha)
 
-		if (req.body.hasOwnProperty('senha')) {
-			const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
-			const senha = await bcrypt.hash(req.body.senha, salt)
+    if (req.body.hasOwnProperty('senha')) {
+      const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
+      const senha = await bcrypt.hash(req.body.senha, salt)
 
-			const RA = sanitize(req.body.RA)
-			alunoSchema.updateOne(
-				{
-					RA: RA,
-				},
-				{
-					senha: senha,
-				},
-				(err) => {
-					if (!err) {
-						res.status(200).send('Senha alterada com sucesso!')
-					} else {
-						res.status(401).send(err)
-					}
-				}
-			)
-		} else {
-			res.status(401).send('Insira uma nova senha!')
-		}
-	}
+      const RA = sanitize(req.body.RA)
+      alunoSchema.updateOne(
+        {
+          RA: RA,
+        },
+        {
+          senha: senha,
+        },
+        (err) => {
+          if (!err) {
+            res.status(200).send('Senha alterada com sucesso!')
+          } else {
+            res.status(401).send(err)
+          }
+        }
+      )
+    } else {
+      res.status(401).send('Insira uma nova senha!')
+    }
+  }
 )
 
 // VER SE O TOKEN DE RECUPERAÇÃO DE SENHA É CORRETO
 function verificarJWTEmail(token, RA) {
-	if (!token) {
-		return false
-	}
+  if (!token) {
+    return false
+  }
 
-	return jwt.verify(
-		token,
-		publicKey,
-		{algorithm: ['RS256']},
-		(err, decoded) => {
-			if (err) {
-				return false
-			} else {
-				if (String(decoded.RA) === RA) {
-					return true
-				} else {
-					return false
-				}
-			}
-		}
-	)
+  return jwt.verify(
+    token,
+    publicKey,
+    {algorithm: ['RS256']},
+    (err, decoded) => {
+      if (err) {
+        return false
+      } else {
+        if (String(decoded.RA) === RA) {
+          return true
+        } else {
+          return false
+        }
+      }
+    }
+  )
 }
 
 module.exports = authRouter
