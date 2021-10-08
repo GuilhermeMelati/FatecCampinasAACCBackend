@@ -554,6 +554,43 @@
           "401": {
             "description": "Não autorizado"
           }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Autenticação"
+        ],
+        "description": "Altera a senha de um usuário",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "senha": {
+                  "example": "any"
+                },
+                "hasOwnProperty": {
+                  "example": "any"
+                },
+                "RA": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
         },
         "security": [
           {

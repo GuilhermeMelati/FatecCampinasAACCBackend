@@ -13,8 +13,8 @@ require('dotenv/config')
 
 // RATE LIMIT
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 30,
+	windowMs: 15 * 60 * 1000,
+	max: 30,
 })
 
 // CONECTANDO O MONGO DB ATLAS (REMOTO)
@@ -23,9 +23,9 @@ mongoose.connect(process.env.MONGO_URI)
 // DEFININDO OS SETS DO EXPRESS
 const app = express()
 app.use(
-  cors({
-    origin: process.env.APPLICATION_URL,
-  })
+	cors({
+		origin: process.env.APPLICATION_URL,
+	})
 )
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
@@ -45,5 +45,5 @@ const port = process.env.PORT || 4000
 
 // ESCUTANDO A PORTA
 app.listen(port, () => {
-  console.log('Rodando na porta ' + port)
+	console.log('Rodando na porta ' + port)
 })
