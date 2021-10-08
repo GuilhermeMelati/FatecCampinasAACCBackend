@@ -49,7 +49,7 @@ alunoRouter.get(
       if (!err) {
         res.status(200).send(atividades)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -77,7 +77,7 @@ alunoRouter.get(
         if (!err) {
           res.status(200).send(atividades)
         } else {
-          res.status(401).send(err)
+          res.status(404).send(err)
         }
       }
     )
@@ -106,7 +106,7 @@ alunoRouter.get(
         if (!err) {
           res.status(200).send(atividades)
         } else {
-          res.status(401).send(err)
+          res.status(404).send(err)
         }
       }
     )
@@ -135,7 +135,7 @@ alunoRouter.get(
         if (!err) {
           res.status(200).send(atividades)
         } else {
-          res.status(401).send(err)
+          res.status(404).send(err)
         }
       }
     )
@@ -157,7 +157,7 @@ alunoRouter.get('/api/atividade/:ID', verificarJWTAluno, async (req, res) => {
     if (!err) {
       res.status(200).send(atividade)
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -183,7 +183,7 @@ alunoRouter.post('/api/atividade', verificarJWTAluno, async (req, res) => {
     if (!err) {
       res.status(200).send('Atividade inserida com sucesso!')
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -212,11 +212,11 @@ alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
         if (!err) {
           res.status(200).send('Atividade atualizada com sucesso!')
         } else {
-          res.status(401).send(err)
+          res.status(404).send(err)
         }
       })
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -239,7 +239,7 @@ alunoRouter.delete(
       if (!err) {
         res.status(200).send('Atividade deletada com sucesso!')
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }

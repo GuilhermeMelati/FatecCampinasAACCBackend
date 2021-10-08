@@ -88,7 +88,7 @@ professorRouter.post(
           if (!err) {
             res.status(200).send('Aluno(a) inserido com sucesso!')
           } else {
-            res.status(401).send(err)
+            res.status(404).send(err)
           }
         })
       })
@@ -112,7 +112,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -134,7 +134,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -156,7 +156,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -178,7 +178,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(atividades)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -200,7 +200,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(alunos)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -227,7 +227,7 @@ professorRouter.get(
       if (!err) {
         res.status(200).send(aluno)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -253,7 +253,7 @@ professorRouter.post('/api/aluno', verificarJWTProfessor, async (req, res) => {
     if (!err) {
       res.status(200).send('Aluno(a) inserido com sucesso!')
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -282,7 +282,7 @@ professorRouter.patch(
       if (!err) {
         res.status(200).send('Aluno(a) atualizado com sucesso!')
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -306,7 +306,7 @@ professorRouter.delete(
       if (!err) {
         res.status(200).send('Aluno(a) apagado com sucesso!')
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }

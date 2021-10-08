@@ -53,12 +53,12 @@ const verificarJWTRecuperaSenha = async (req, res, next) => {
 
   jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
     if (err) {
-      return res.status(500).send({message: 'Token inválido.'})
+      return res.status(401).send({message: 'Token inválido.'})
     } else {
       if (decoded.acesso === 'recuperar' && decoded.RA === req.body.RA) {
         next()
       } else {
-        return res.status(500).send({message: 'Você não tem permissão.'})
+        return res.status(401).send({message: 'Você não tem permissão.'})
       }
     }
   })
@@ -84,13 +84,13 @@ authRouter.post('/api/login', async (req, res) => {
 
   professorSchema.findOne({email: login}, (err, professor) => {
     if (err) {
-      return res.status(500).send(err)
+      return res.status(404).send(err)
     }
 
     if (professor) {
       professor.validarSenha(senha, (err, ok) => {
         if (!ok || err) {
-          return res.status(401).send(err)
+          return res.status(404).send(err)
         }
 
         return res.status(200).send({
@@ -102,16 +102,16 @@ authRouter.post('/api/login', async (req, res) => {
 
     alunoSchema.findOne({RA: login}, (err, aluno) => {
       if (err) {
-        return res.status(500).send(err)
+        return res.status(404).send(err)
       }
 
       if (!aluno) {
-        return res.status(401).send(err)
+        return res.status(404).send(err)
       }
 
       aluno.validarSenha(senha, (err, ok) => {
         if (!ok || err) {
-          return res.status(401).send(err)
+          return res.status(404).send(err)
         }
 
         return res.status(200).send({
@@ -159,7 +159,7 @@ authRouter.post('/api/recuperar-senha', async (req, res) => {
       }
       return res.status(401).send('Nenhum aluno encontrado com esse RA!')
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -186,7 +186,7 @@ authRouter.get('/api/recuperar-senha/:token/:ra', async (req, res) => {
         if (!err) {
           res.status(200).send(document)
         } else {
-          res.status(401).send(err)
+          res.status(404).send(err)
         }
       }
     )
@@ -224,7 +224,7 @@ authRouter.patch(
           if (!err) {
             res.status(200).send('Senha alterada com sucesso!')
           } else {
-            res.status(401).send(err)
+            res.status(404).send(err)
           }
         }
       )

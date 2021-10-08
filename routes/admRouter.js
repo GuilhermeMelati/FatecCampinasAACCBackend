@@ -16,12 +16,12 @@ const verificarJWTADM = async (req, res, next) => {
 
   jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
     if (err) {
-      return res.status(500).send({message: 'Token inválido.'})
+      return res.status(401).send({message: 'Token inválido.'})
     } else {
       if (decoded.acesso === 'adm') {
         next()
       } else {
-        return res.status(500).send({message: 'Você não tem permissão.'})
+        return res.status(401).send({message: 'Você não tem permissão.'})
       }
     }
   })
@@ -43,7 +43,7 @@ admRouter.get(
       if (!err) {
         res.status(200).send(professores)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -70,7 +70,7 @@ admRouter.get(
       if (!err) {
         res.status(200).send(professor)
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
@@ -97,7 +97,7 @@ admRouter.post('/api/professor', async (req, res, next) => {
     if (!err) {
       res.status(200).send('Professor(a) inserido com sucesso!')
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -129,7 +129,7 @@ admRouter.patch('/api/professor', verificarJWTADM, async (req, res, next) => {
     if (!err) {
       res.status(200).send('Professor(a) atualizado com sucesso!')
     } else {
-      res.status(401).send(err)
+      res.status(404).send(err)
     }
   })
 })
@@ -152,7 +152,7 @@ admRouter.delete(
       if (!err) {
         res.status(200).send('Professor(a) apagado com sucesso!')
       } else {
-        res.status(401).send(err)
+        res.status(404).send(err)
       }
     })
   }
