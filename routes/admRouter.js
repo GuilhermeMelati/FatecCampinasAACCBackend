@@ -9,29 +9,29 @@ const publicKey = process.env.PUBLIC_KEY
 require('dotenv/config')
 
 const verificarJWTADM = async (req, res, next) => {
-	var token = req.headers['x-access-token']
-	if (!token) {
-		return res.status(401).send({message: 'Token não informado.'})
-	}
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({message: 'Token não informado.'})
+  }
 
-	jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
-		if (err) {
-			return res.status(500).send({message: 'Token inválido.'})
-		} else {
-			if (decoded.acesso === 'adm') {
-				next()
-			} else {
-				return res.status(500).send({message: 'Você não tem permissão.'})
-			}
-		}
-	})
+  jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
+    if (err) {
+      return res.status(500).send({message: 'Token inválido.'})
+    } else {
+      if (decoded.acesso === 'adm') {
+        next()
+      } else {
+        return res.status(500).send({message: 'Você não tem permissão.'})
+      }
+    }
+  })
 }
 
 admRouter.get(
-	'/api/professor/todos',
-	verificarJWTADM,
-	async (req, res, next) => {
-		/* 
+  '/api/professor/todos',
+  verificarJWTADM,
+  async (req, res, next) => {
+    /* 
     #swagger.tags = ['Administrador']
     #swagger.description = 'Obter todos os professores'
     #swagger.security = [{
@@ -39,21 +39,21 @@ admRouter.get(
     }] 
   */
 
-		professorSchema.find((err, professores) => {
-			if (!err) {
-				res.status(200).send(professores)
-			} else {
-				res.status(401).send(err)
-			}
-		})
-	}
+    professorSchema.find((err, professores) => {
+      if (!err) {
+        res.status(200).send(professores)
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
 )
 
 admRouter.get(
-	'/api/professor/:email',
-	verificarJWTADM,
-	async (req, res, next) => {
-		/* 
+  '/api/professor/:email',
+  verificarJWTADM,
+  async (req, res, next) => {
+    /* 
     #swagger.tags = ['Administrador']
     #swagger.description = 'Obter professor por email'
     #swagger.security = [{
@@ -61,23 +61,23 @@ admRouter.get(
     }] 
   */
 
-		const email = sanitize(req.params.email)
+    const email = sanitize(req.params.email)
 
-		professorSchema.findOne((err, professor) => {
-			{
-				email: email
-			}
-			if (!err) {
-				res.status(200).send(professor)
-			} else {
-				res.status(401).send(err)
-			}
-		})
-	}
+    professorSchema.findOne((err, professor) => {
+      {
+        email: email
+      }
+      if (!err) {
+        res.status(200).send(professor)
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
 )
 
 admRouter.post('/api/professor', async (req, res, next) => {
-	/* 
+  /* 
     #swagger.tags = ['Administrador']
     #swagger.description = 'Inserir novo professor'
     #swagger.security = [{
@@ -91,19 +91,19 @@ admRouter.post('/api/professor', async (req, res, next) => {
     }
   */
 
-	const newProfessor = new professorSchema(sanitize(req.body))
+  const newProfessor = new professorSchema(sanitize(req.body))
 
-	newProfessor.save((err) => {
-		if (!err) {
-			res.status(200).send('Professor(a) inserido com sucesso!')
-		} else {
-			res.status(401).send(err)
-		}
-	})
+  newProfessor.save((err) => {
+    if (!err) {
+      res.status(200).send('Professor(a) inserido com sucesso!')
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 admRouter.patch('/api/professor', verificarJWTADM, async (req, res, next) => {
-	/* 
+  /* 
     #swagger.tags = ['Administrador']
     #swagger.description = 'Atualizar professor'
     #swagger.security = [{
@@ -117,28 +117,28 @@ admRouter.patch('/api/professor', verificarJWTADM, async (req, res, next) => {
     }
   */
 
-	if (req.body.hasOwnProperty('senha')) {
-		const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
-		req.body.senha = await bcrypt.hash(req.body.senha, salt)
-	}
+  if (req.body.hasOwnProperty('senha')) {
+    const salt = await bcrypt.genSalt(parseInt(process.env.SALT_WORK_FACTOR))
+    req.body.senha = await bcrypt.hash(req.body.senha, salt)
+  }
 
-	const email = sanitize(req.body.email)
-	const body = sanitize(req.body)
+  const email = sanitize(req.body.email)
+  const body = sanitize(req.body)
 
-	professorSchema.updateOne({email: email}, {$set: body}, (err) => {
-		if (!err) {
-			res.status(200).send('Professor(a) atualizado com sucesso!')
-		} else {
-			res.status(401).send(err)
-		}
-	})
+  professorSchema.updateOne({email: email}, {$set: body}, (err) => {
+    if (!err) {
+      res.status(200).send('Professor(a) atualizado com sucesso!')
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 admRouter.delete(
-	'/api/professor/:email',
-	verificarJWTADM,
-	async (req, res, next) => {
-		/* 
+  '/api/professor/:email',
+  verificarJWTADM,
+  async (req, res, next) => {
+    /* 
     #swagger.tags = ['Administrador']
     #swagger.description = 'Deletar professor por email'
     #swagger.security = [{
@@ -146,16 +146,16 @@ admRouter.delete(
     }]
   */
 
-		const email = sanitize(req.params.email)
+    const email = sanitize(req.params.email)
 
-		professorSchema.deleteOne({email: email}, (err) => {
-			if (!err) {
-				res.status(200).send('Professor(a) apagado com sucesso!')
-			} else {
-				res.status(401).send(err)
-			}
-		})
-	}
+    professorSchema.deleteOne({email: email}, (err) => {
+      if (!err) {
+        res.status(200).send('Professor(a) apagado com sucesso!')
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
 )
 
 module.exports = admRouter

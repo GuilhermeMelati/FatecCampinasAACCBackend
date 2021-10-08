@@ -9,33 +9,33 @@ const alunoRouter = Router()
 require('dotenv/config')
 
 const verificarJWTAluno = async (req, res, next) => {
-	var token = req.headers['x-access-token']
-	if (!token) {
-		return res.status(401).send({message: 'Token não informado.'})
-	}
+  var token = req.headers['x-access-token']
+  if (!token) {
+    return res.status(401).send({message: 'Token não informado.'})
+  }
 
-	jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
-		if (err) {
-			return res.status(500).send({message: 'Token inválido.'})
-		} else {
-			if (
-				decoded.acesso === 'user' ||
-				decoded.acesso === 'professor' ||
-				decoded.acesso === 'adm'
-			) {
-				next()
-			} else {
-				return res.status(500).send({message: 'Você não tem permissão.'})
-			}
-		}
-	})
+  jwt.verify(token, publicKey, {algorithm: ['RS256']}, (err, decoded) => {
+    if (err) {
+      return res.status(500).send({message: 'Token inválido.'})
+    } else {
+      if (
+        decoded.acesso === 'user' ||
+        decoded.acesso === 'professor' ||
+        decoded.acesso === 'adm'
+      ) {
+        next()
+      } else {
+        return res.status(500).send({message: 'Você não tem permissão.'})
+      }
+    }
+  })
 }
 
 alunoRouter.get(
-	'/api/atividades/todas/:RA',
-	verificarJWTAluno,
-	async (req, res) => {
-		/* 
+  '/api/atividades/todas/:RA',
+  verificarJWTAluno,
+  async (req, res) => {
+    /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades do aluno com base no RA'
     #swagger.security = [{
@@ -43,23 +43,23 @@ alunoRouter.get(
     }] 
   */
 
-		const RA = sanitize(req.params.RA)
+    const RA = sanitize(req.params.RA)
 
-		atividadeSchema.find({RA: RA}, (err, atividades) => {
-			if (!err) {
-				res.status(200).send(atividades)
-			} else {
-				res.status(401).send(err)
-			}
-		})
-	}
+    atividadeSchema.find({RA: RA}, (err, atividades) => {
+      if (!err) {
+        res.status(200).send(atividades)
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
 )
 
 alunoRouter.get(
-	'/api/atividades/pendentes/:RA',
-	verificarJWTAluno,
-	async (req, res) => {
-		/* 
+  '/api/atividades/pendentes/:RA',
+  verificarJWTAluno,
+  async (req, res) => {
+    /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades pendentes do aluno com base no RA'
     #swagger.security = [{
@@ -67,28 +67,28 @@ alunoRouter.get(
     }] 
   */
 
-		const RA = sanitize(req.params.RA)
-		atividadeSchema.find(
-			{
-				RA: RA,
-				status: 'pendente',
-			},
-			(err, atividades) => {
-				if (!err) {
-					res.status(200).send(atividades)
-				} else {
-					res.status(401).send(err)
-				}
-			}
-		)
-	}
+    const RA = sanitize(req.params.RA)
+    atividadeSchema.find(
+      {
+        RA: RA,
+        status: 'pendente',
+      },
+      (err, atividades) => {
+        if (!err) {
+          res.status(200).send(atividades)
+        } else {
+          res.status(401).send(err)
+        }
+      }
+    )
+  }
 )
 
 alunoRouter.get(
-	'/api/atividades/confirmadas/:RA',
-	verificarJWTAluno,
-	async (req, res) => {
-		/* 
+  '/api/atividades/confirmadas/:RA',
+  verificarJWTAluno,
+  async (req, res) => {
+    /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades confirmadas do aluno com base no RA'
     #swagger.security = [{
@@ -96,28 +96,28 @@ alunoRouter.get(
     }] 
   */
 
-		const RA = sanitize(req.params.RA)
-		atividadeSchema.find(
-			{
-				RA: RA,
-				status: 'confirmada',
-			},
-			(err, atividades) => {
-				if (!err) {
-					res.status(200).send(atividades)
-				} else {
-					res.status(401).send(err)
-				}
-			}
-		)
-	}
+    const RA = sanitize(req.params.RA)
+    atividadeSchema.find(
+      {
+        RA: RA,
+        status: 'confirmada',
+      },
+      (err, atividades) => {
+        if (!err) {
+          res.status(200).send(atividades)
+        } else {
+          res.status(401).send(err)
+        }
+      }
+    )
+  }
 )
 
 alunoRouter.get(
-	'/api/atividades/negadas/:RA',
-	verificarJWTAluno,
-	async (req, res) => {
-		/* 
+  '/api/atividades/negadas/:RA',
+  verificarJWTAluno,
+  async (req, res) => {
+    /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter todas as atividades negadas do aluno com base no RA'
     #swagger.security = [{
@@ -125,25 +125,25 @@ alunoRouter.get(
     }] 
   */
 
-		const RA = sanitize(req.params.RA)
-		atividadeSchema.find(
-			{
-				RA: RA,
-				status: 'negada',
-			},
-			(err, atividades) => {
-				if (!err) {
-					res.status(200).send(atividades)
-				} else {
-					res.status(401).send(err)
-				}
-			}
-		)
-	}
+    const RA = sanitize(req.params.RA)
+    atividadeSchema.find(
+      {
+        RA: RA,
+        status: 'negada',
+      },
+      (err, atividades) => {
+        if (!err) {
+          res.status(200).send(atividades)
+        } else {
+          res.status(401).send(err)
+        }
+      }
+    )
+  }
 )
 
 alunoRouter.get('/api/atividade/:ID', verificarJWTAluno, async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Obter atividade pelo id'
     #swagger.security = [{
@@ -151,19 +151,19 @@ alunoRouter.get('/api/atividade/:ID', verificarJWTAluno, async (req, res) => {
     }] 
   */
 
-	const id = sanitize(req.params.ID)
+  const id = sanitize(req.params.ID)
 
-	atividadeSchema.findById(id, (err, atividade) => {
-		if (!err) {
-			res.status(200).send(atividade)
-		} else {
-			res.status(401).send(err)
-		}
-	})
+  atividadeSchema.findById(id, (err, atividade) => {
+    if (!err) {
+      res.status(200).send(atividade)
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 alunoRouter.post('/api/atividade', verificarJWTAluno, async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Inserir uma nova atividade'
     #swagger.security = [{
@@ -177,19 +177,19 @@ alunoRouter.post('/api/atividade', verificarJWTAluno, async (req, res) => {
     }
   */
 
-	const newAtividade = new atividadeSchema(sanitize(req.body))
+  const newAtividade = new atividadeSchema(sanitize(req.body))
 
-	newAtividade.save((err) => {
-		if (!err) {
-			res.status(200).send('Atividade inserida com sucesso!')
-		} else {
-			res.status(401).send(err)
-		}
-	})
+  newAtividade.save((err) => {
+    if (!err) {
+      res.status(200).send('Atividade inserida com sucesso!')
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
-	/* 
+  /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Atualizar uma atividade'
     #swagger.security = [{
@@ -197,35 +197,35 @@ alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
     }] 
   */
 
-	const RA = sanitize(req.body.RA)
+  const RA = sanitize(req.body.RA)
 
-	alunoSchema.findOne({RA: RA}, (err, aluno) => {
-		if (!err) {
-			if (req.body.status) {
-				statusModificado.enviarEmail(aluno.email, 'localhost:4000', aluno.nome)
-			}
+  alunoSchema.findOne({RA: RA}, (err, aluno) => {
+    if (!err) {
+      if (req.body.status) {
+        statusModificado.enviarEmail(aluno.email, 'localhost:4000', aluno.nome)
+      }
 
-			const id = sanitize(req.body._id)
-			const body = sanitize(req.body)
+      const id = sanitize(req.body._id)
+      const body = sanitize(req.body)
 
-			atividadeSchema.findByIdAndUpdate(id, {$set: body}, (err) => {
-				if (!err) {
-					res.status(200).send('Atividade atualizada com sucesso!')
-				} else {
-					res.status(401).send(err)
-				}
-			})
-		} else {
-			res.status(401).send(err)
-		}
-	})
+      atividadeSchema.findByIdAndUpdate(id, {$set: body}, (err) => {
+        if (!err) {
+          res.status(200).send('Atividade atualizada com sucesso!')
+        } else {
+          res.status(401).send(err)
+        }
+      })
+    } else {
+      res.status(401).send(err)
+    }
+  })
 })
 
 alunoRouter.delete(
-	'/api/atividade/:ID',
-	verificarJWTAluno,
-	async (req, res) => {
-		/* 
+  '/api/atividade/:ID',
+  verificarJWTAluno,
+  async (req, res) => {
+    /* 
     #swagger.tags = ['Aluno']
     #swagger.description = 'Deletar uma atividade pelo id'
     #swagger.security = [{
@@ -233,16 +233,16 @@ alunoRouter.delete(
     }] 
   */
 
-		const id = sanitize(req.params.ID)
+    const id = sanitize(req.params.ID)
 
-		atividadeSchema.findByIdAndRemove(id, (err) => {
-			if (!err) {
-				res.status(200).send('Atividade deletada com sucesso!')
-			} else {
-				res.status(401).send(err)
-			}
-		})
-	}
+    atividadeSchema.findByIdAndRemove(id, (err) => {
+      if (!err) {
+        res.status(200).send('Atividade deletada com sucesso!')
+      } else {
+        res.status(401).send(err)
+      }
+    })
+  }
 )
 
 module.exports = alunoRouter
