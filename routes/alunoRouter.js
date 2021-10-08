@@ -2,6 +2,7 @@ const {Router} = require('express')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const atividadeSchema = require('../models/atividades')
+const alunoSchema = require('../models/alunos')
 const statusModificado = require('../utils/notificacoes/statusModificado')
 const publicKey = process.env.PUBLIC_KEY
 const sanitize = require('mongo-sanitize')
@@ -202,7 +203,7 @@ alunoRouter.patch('/api/atividade', verificarJWTAluno, async (req, res) => {
   alunoSchema.findOne({RA: RA}, (err, aluno) => {
     if (!err) {
       if (req.body.status) {
-        statusModificado.enviarEmail(aluno.email, 'localhost:4000', aluno.nome)
+        statusModificado.enviarEmail(aluno.email, process.env.APPLICATION_URL, aluno.nome)
       }
 
       const id = sanitize(req.body._id)
